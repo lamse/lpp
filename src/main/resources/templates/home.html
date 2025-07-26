@@ -1,13 +1,21 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html th:replace="~{layout/base :: params(~{::title}, ~{::section}, ~{::link})}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/tailwind-2.2.19.min.css}"
-          href="/css/tailwind-2.2.19.min.css" rel="stylesheet">
+    <title>Home</title>
 </head>
 <body>
-<div class="container">
-    <h3 th:text="|Hi ${user.name}|">Home</h3>
-</div> <!-- /container -->
+<section>
+    <div class="container">
+        <h3 th:text="|Hi ${user?.name}|">Home</h3>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">
+                    로그아웃
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
 </body>
 </html>
