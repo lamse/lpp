@@ -20,7 +20,10 @@ public class LoginService {
     @SneakyThrows
     public User login (LoginForm form) {
         User user = userRepository.findByEmail((form.getEmail()))
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일의 회원이 없습니다."));
+                .orElse(null);
+        if (user == null) {
+            return null;
+        }
         String hashedPassword = PasswordUtil.hashPassword(form.getPassword());
         log.info("user password: {}", user.getPassword());
         log.info("hashed password: {}", hashedPassword);

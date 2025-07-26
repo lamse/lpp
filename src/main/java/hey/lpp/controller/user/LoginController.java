@@ -41,8 +41,8 @@ public class LoginController {
         // 로그인 처리 로직
         User user = loginService.login(form);
         if (user == null) {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다."); // 로그인 실패 메시지 추가
-            return "redirect:/login"; // 로그인 실패 시 다시 폼으로 이동
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다."); // 로그인 실패 메시지 추가
+            return "login/loginForm"; // 로그인 실패 시 다시 폼으로 이동
         }
 
         HttpSession session = request.getSession();
