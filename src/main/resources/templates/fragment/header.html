@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+    <title th:replace="${title}">Title</title>
+    <meta charset="utf-8">
+    <link th:href="@{/css/tailwind-2.2.19.min.css}"
+          href="/css/tailwind-2.2.19.min.css" rel="stylesheet">
+    <th:block th:if="${links != null}">
+        <th:block th:replace="${links}" />
+    </th:block>
+</head>
