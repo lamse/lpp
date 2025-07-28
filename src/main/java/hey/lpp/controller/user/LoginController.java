@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,22 +25,22 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public String loginForm(LoginForm loginForm) {
+    public String loginForm(LoginForm loginForm, Model model) {
+        model.addAttribute("loginForm", loginForm);
         return "login/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(@Validated LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Validated LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
 
-        log.info("로그인 시도: {}", form);
-        log.info("BindingResult: {}", bindingResult);
+        log.info("로그인 시도: {}", loginForm);
 
         if (bindingResult.hasErrors()) {
             return "redirect:/login"; // 에러가 있는 경우 다시 폼으로 이동
         }
 
         // 로그인 처리 로직
-        User user = loginService.login(form);
+        User user = loginService.login(loginForm);
         if (user == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다."); // 로그인 실패 메시지 추가
             return "login/loginForm"; // 로그인 실패 시 다시 폼으로 이동

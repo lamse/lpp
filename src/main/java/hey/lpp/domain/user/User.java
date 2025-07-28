@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public User() {

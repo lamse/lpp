@@ -17,20 +17,10 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public List<User> users() {
-        return List.of();
-    }
-
-    public User saveUser(User user) {
-        return null;
-    }
-
-    public User updateUser(User user) {
-        return null;
-    }
-
-    public void deleteUser(Long id) {
-
+    @SneakyThrows
+    public User join(User user) {
+        user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
+        return userRepository.save(user);
     }
 
 }
