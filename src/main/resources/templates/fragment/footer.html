@@ -1,13 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<footer th:fragment="footer" class="flex mt-4 mx-2">
+<footer th:fragment="footer" class="mt-4 mx-2">
     <div th:if="!${loginPage}" class="mt-4">
-        <form th:if="${user?.getId() != null}" th:action="@{/logout}" method="post">
-            <button class="bg-blue-100 rounded-md p-1 px-2" type="submit">
-                로그아웃
-            </button>
-        </form>
+        <div class="flex gap-2" th:if="${user?.getId() != null}">
+            <form th:action="@{/logout}" method="post">
+                <button class="bg-blue-100 rounded-md p-1 px-2" type="submit">
+                    로그아웃
+                </button>
+            </form>
+            <a class="bg-blue-100 rounded-md p-1 px-2" href="/product" th:href="@{/product}">상품등록</a>
+        </div>
+
         <span th:if="${user?.getId() == null}">
-            <a class="bg-blue-100 rounded-md p-1 px-2" th:href="@{/login}">로그인</a>
+            <a class="bg-blue-100 rounded-md p-1 px-2" href="/login" th:href="@{/login}">로그인</a>
         </span>
     </div>
 </footer>

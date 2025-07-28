@@ -1,7 +1,7 @@
-package hey.lpp.domain.user;
+package hey.lpp.domain.product;
 
+import hey.lpp.domain.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,20 +13,22 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Entity
-public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    @Email
-    @Column(unique = true)
-    private String email;
-
-    @NotEmpty
-    private String password;
+    @ManyToOne
+    private User user;
 
     @NotEmpty
     private String name;
+
+    @NotEmpty
+    private String image;
+
+    @NotEmpty
+    private String url;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
