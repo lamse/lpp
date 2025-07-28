@@ -23,12 +23,10 @@ public class HomeController {
             @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long userId,
             Model model) {
 
-        if (userId == null) {
-            return "redirect:/login";
+        if (userId != null) {
+            Optional<User> user = userRepository.findById(userId);
+            user.ifPresent(value -> model.addAttribute("user", value));
         }
-
-        Optional<User> user = userRepository.findById(userId);
-        user.ifPresent(value -> model.addAttribute("user", value));
 
         return "home";
     }

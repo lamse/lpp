@@ -1,4 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<footer th:fragment="footer" class="flex justify-center mt-4">
-    footer
+<footer th:fragment="footer" class="flex mt-4">
+    <div class="mt-4">
+        <form th:if="${user != null}" th:action="@{/logout}" method="post">
+            <button class="bg-blue-100 rounded-md p-1 px-2" type="submit">
+                로그아웃
+            </button>
+        </form>
+        <span th:if="${user == null}">
+            <a class="bg-blue-100 rounded-md p-1 px-2" th:href="@{/login}">로그인</a>
+        </span>
+    </div>
 </footer>
