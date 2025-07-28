@@ -25,8 +25,8 @@ public class LoginService {
             return null;
         }
         String hashedPassword = PasswordUtil.hashPassword(form.getPassword());
-        log.info("user password: {}", user.getPassword());
-        log.info("hashed password: {}", hashedPassword);
+//        log.info("user password: {}", user.getPassword());
+//        log.info("hashed password: {}", hashedPassword);
 
         if (user.getPassword().equals(hashedPassword)) {
             return user;
