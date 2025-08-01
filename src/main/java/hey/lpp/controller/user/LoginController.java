@@ -5,7 +5,6 @@ import hey.lpp.domain.user.LoginForm;
 import hey.lpp.domain.user.User;
 import hey.lpp.service.user.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 
@@ -32,7 +32,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Validated LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request,
+            @RequestParam(defaultValue = "/") String redirectURL) {
 
         log.info("로그인 시도: {}", loginForm);
 
@@ -49,17 +50,18 @@ public class LoginController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER_ID, user.getId());
+        user.setPassword(null); // 보안을 위해 세션에 저장하기 전에 비밀번호를 제거
+        session.setAttribute(SessionConst.LOGIN_USER, user);
 
-        return "redirect:/"; // 로그인 성공 시 홈으로 리다이렉트
+        return "redirect:" + redirectURL;
     }
 
     @PostMapping("/logout")
-    public String logout(@SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long userId
-            , HttpServletRequest request) {
+    public String logout(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User user,
+            HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (userId != null) {
-            session.removeAttribute(SessionConst.LOGIN_USER_ID);
+        if (user != null) {
+            session.removeAttribute(SessionConst.LOGIN_USER);
         }
 
         return "redirect:/login";

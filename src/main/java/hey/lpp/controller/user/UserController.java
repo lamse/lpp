@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String join(@Validated User user, BindingResult bindingResult, HttpServletRequest request) {
+    public String join(@Validated User user, BindingResult bindingResult, HttpSession httpSession) {
 
         log.info("가입 시도: {}", user);
 
@@ -39,15 +39,14 @@ public class UserController {
         // 로그인 처리 로직
         try {
             User joinUser = userService.join(user);
-            HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_USER_ID, joinUser.getId());
+            log.info("회원 가입 성공: {}", joinUser);
+            joinUser.setPassword(null);
+            httpSession.setAttribute(SessionConst.LOGIN_USER, joinUser);
         } catch (Exception ex) {
             log.error("회원 가입 실패: {}", ex.getMessage());
             bindingResult.reject("joinFail", "이미 존재하는 이메일입니다."); // 가입 실패 메시지 추가
             return "user/joinForm"; // 가입 실패 시 다시 폼으로 이동
         }
-
-
 
         return "redirect:/";
     }
