@@ -12,7 +12,7 @@
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form  action="/join" th:action="@{/join}" th:object="${product}" method="post" enctype="multipart/form-data" class="space-y-6">
+            <form  action="/product/add" th:action="@{/product/add}" th:object="${productForm}" method="post" enctype="multipart/form-data" class="space-y-6">
                 <div th:if="${#fields.hasGlobalErrors()}">
                     <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                        th:text="${err}">전체 오류 메시지</p>
@@ -29,10 +29,10 @@
                 </div>
 
                 <div>
-                    <label for="image" class="block text-sm/6 font-medium text-gray-900">Image</label>
+                    <label for="imageFile" class="block text-sm/6 font-medium text-gray-900">Image</label>
                     <div class="mt-2">
-                        <input id="image" type="file" name="image" >
-                        <div class="field-error" th:errors="*{image}"></div>
+                        <input id="imageFile" type="file" name="imageFile" required>
+                        <div class="field-error" th:errors="*{imageFile}"></div>
                     </div>
                 </div>
 

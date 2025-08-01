@@ -7,7 +7,7 @@
                     로그아웃
                 </button>
             </form>
-            <a class="bg-blue-100 rounded-md p-1 px-2" href="/product" th:href="@{/product}">상품등록</a>
+            <a class="bg-blue-100 rounded-md p-1 px-2" href="/product/add" th:href="@{/product/add}">상품등록</a>
         </div>
 
         <span th:if="${user?.getId() == null}">

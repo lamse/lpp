@@ -37,7 +37,8 @@ public class LoginController {
         log.info("로그인 시도: {}", loginForm);
 
         if (bindingResult.hasErrors()) {
-            return "redirect:/login"; // 에러가 있는 경우 다시 폼으로 이동
+            log.info("로그인 폼 유효성 검사 실패: {}", bindingResult.getAllErrors());
+            return "login/loginForm"; // 에러가 있는 경우 다시 폼으로 이동
         }
 
         // 로그인 처리 로직
