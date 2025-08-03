@@ -17,8 +17,8 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Product product;
+    @Column(name="product_id")
+    private Long productId;
 
     @NotEmpty
     private String uploadName;

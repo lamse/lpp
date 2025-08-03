@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch= FetchType.LAZY)
     private User user;
 
     @NotEmpty
@@ -26,6 +27,10 @@ public class Product {
 
     @NotEmpty
     private String url;
+
+    @OneToMany(fetch= FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private List<ProductImage> productImages;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

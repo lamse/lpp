@@ -36,7 +36,7 @@ public class ProductService {
         List<UploadFile> imageFiles = fileStore.storeFiles(productForm.getImageFiles());
         for (UploadFile imageFile : imageFiles) {
             ProductImage productImage = new ProductImage();
-            productImage.setProduct(saveProduct);
+            productImage.setProductId(saveProduct.getId());
             productImage.setUploadName(imageFile.getUploadFileName());
             productImage.setStoreName(imageFile.getStoreFileName());
             productImageRepository.save(productImage);

@@ -1,6 +1,8 @@
 package hey.lpp.util;
 
 import hey.lpp.domain.product.UploadFile;
+import jakarta.servlet.ServletContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,13 +20,17 @@ import java.util.UUID;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class FileStore {
+    private final ServletContext servletContext;
 
     @Value("${file.dir}")
     private String fileDir;
 
     public String getFullPath(String filename) {
-        String targetDir = createDateDirectory(fileDir);
+        String directoryPath = servletContext.getRealPath("/");
+        log.info("directoryPath: {}", directoryPath);
+        String targetDir = createDateDirectory(directoryPath + fileDir + File.separator + "product");
         return targetDir + File.separator + filename;
     }
 
