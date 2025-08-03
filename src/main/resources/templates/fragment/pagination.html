@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="pagination(items, requestUri)" aria-label="Pagination" class="flex justify-center mt-4 border-t pt-3" th:if="${items.totalPages > 0}">
+    <ul class="pagination flex gap-2">
+        <li class="rounded-md p-1 px-2" th:classappend="${items.first} ? 'bg-gray-200' : 'bg-blue-200'">
+            <a th:if="${items.first}">↤</a>
+            <a th:if="${!items.first}" th:href="@{${requestUri}(page=0, size=${items.size})}">↤</a>
+        </li>
+        <li class="rounded-md p-1 px-2" th:classappend="${items.number < 1} ? 'bg-gray-200' : 'bg-blue-200'">
+            <a th:if="${items.number > 0}" th:href="@{${requestUri}(page=${items.number - 1}, size=${items.size})}">↢</a>
+            <a th:if="${items.number <= 0}">↢</a>
+        </li>
+
+        <li th:each="page : ${#numbers.sequence(1, items.totalPages) }"
+            class="rounded-md p-1 px-2" th:classappend="${page == items.number + 1} ? 'bg-gray-200' : 'bg-blue-200'">
+            <a th:if="${page == items.number + 1}" th:text="${page}"></a>
+            <a th:if="${page != items.number + 1}" th:href="@{${requestUri}(page=${page - 1}, size=${items.size})}" th:text="${page}"></a>
+        </li>
+
+        <li class="rounded-md p-1 px-2" th:classappend="${items.number < items.totalPages - 1} ? 'bg-blue-200' : 'bg-gray-200'">
+            <a th:if="${items.number < items.totalPages - 1}" th:href="@{${requestUri}(page=${items.totalPages - 1}, size=${items.size})}">↣</a>
+            <a th:if="${items.number >= items.totalPages - 1}">↣</a>
+        </li>
+        <li class="rounded-md p-1 px-2" th:classappend="${items.last} ? 'bg-gray-200' : 'bg-blue-200'">
+            <a th:if="${items.last}">↦</a>
+            <a th:if="${!items.last}" th:href="@{${requestUri}(page=${items.totalPages -1}, size=${items.size})}">↦</a>
+        </li>
+    </ul>
+</nav>
