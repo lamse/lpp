@@ -6,9 +6,72 @@
 </head>
 <body>
 <section>
-    <div class="container m-3">
-        <h3>Home</h3>
+    <div class="bg-white">
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <h2 class="sr-only">Products</h2>
+
+            <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+
+                <a th:each="product : ${products}" th:href="${product.url}" href="#" class="group">
+                    <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-01.jpg" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]" />
+                    <h3 class="mt-4 text-lg text-gray-700" th:text="${product.name}">Earthen Bottle</h3>
+                    <p class="mt-1 text-md font-medium text-gray-900">$48</p>
+                </a>
+            </div>
+
+<!--            <div class="table-pagination">-->
+<!--                <ul class="pagination">-->
+<!--                    <li th:class="${products.number eq 0} ? 'disabled' : ''">-->
+<!--                        <a th:if="${not products.first}"-->
+<!--                           th:href="@{${'/'}(page=${products.number - 1}, size=${products.size})}">Previous</a>-->
+<!--                        <a th:if="${products.first}" href="javascript:void(0);">Previous</a>-->
+<!--                    </li>-->
+
+<!--                    <li th:each="pageNo : ${#numbers.sequence(0, products.totalPages - 1)}"-->
+<!--                        th:class="${products.number eq pageNo}? 'active' : ''">-->
+<!--                        <a th:if="${products.number  eq pageNo}" href="javascript:void(0);">-->
+<!--                            <span th:text="${pageNo + 1}"></span>-->
+<!--                        </a>-->
+<!--                        <a th:if="${not (products.number  eq pageNo)}"-->
+<!--                           th:href="@{${'/'}(page=${pageNo},size=${products.size})}">-->
+<!--                            <span th:text="${pageNo + 1}"></span>-->
+<!--                        </a>-->
+
+<!--                    </li>-->
+<!--                    <li th:class="${products.number + 1 ge products.totalPages} ? 'disabled' : ''">-->
+<!--                        <a th:if="${not products.last}"-->
+<!--                           th:href="@{${'/'}(page=${products.number + 1},size=${products.size})}">Next</a>-->
+<!--                        <a th:if="${products.last}" href="javascript:void(0);">Next</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+            <nav aria-label="Pagination" class="flex justify-center mt-4 border-t pt-3" th:if="${products.totalPages > 0}">
+                <ul class="pagination flex gap-2">
+                    <li class="rounded-md p-1 px-2" th:classappend="${products.first} ? 'bg-gray-200' : 'bg-blue-200'">
+                        <a th:if="${products.first}">↤</a>
+                        <a th:if="${!products.first}" th:href="@{${'/'}(page=0, size=${products.size})}">↤</a>
+                    </li>
+                    <li class="rounded-md p-1 px-2" th:classappend="${products.number < 1} ? 'bg-gray-200' : 'bg-blue-200'">
+                        <a th:if="${products.number > 0}" th:href="@{${'/'}(page=${products.number - 1}, size=${products.size})}">↢</a>
+                        <a th:if="${products.number <= 0}">↢</a>
+                    </li>
+                    <li th:each="page : ${#numbers.sequence(1, products.totalPages) }"
+                        class="bg-blue-200 rounded-md p-1 px-2" th:classappend="${page == products.number} ? 'active'">
+                        <a th:href="@{${'/'}(page=${page - 1}, size=${products.size})}" th:text="${page}"></a>
+                    </li>
+                    <li class="rounded-md p-1 px-2" th:classappend="${products.number < products.totalPages - 1} ? 'bg-blue-200' : 'bg-gray-200'">
+                        <a th:if="${products.number < products.totalPages - 1}" th:href="@{${'/'}(page=${products.totalPages - 1}, size=${products.size})}">↣</a>
+                        <a th:if="${products.number >= products.totalPages - 1}">↣</a>
+                    </li>
+                    <li class="rounded-md p-1 px-2" th:classappend="${products.last} ? 'bg-gray-200' : 'bg-blue-200'">
+                        <a th:if="${products.last}">↦</a>
+                        <a th:if="${!products.last}" th:href="@{${'/'}(page=${products.totalPages -1}, size=${products.size})}">↦</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+
 </section>
 </body>
 </html>
