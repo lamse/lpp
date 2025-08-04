@@ -6,4 +6,7 @@ public class Pointcuts {
 
     @Pointcut("execution(* hey.lpp.controller.product..*(..))")
     public void allProduct(){}
+
+    @Pointcut("execution(* hey.lpp.controller.product.ProductController.viewProduct(..))")
+    public void viewProduct(){}
 }

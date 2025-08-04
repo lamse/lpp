@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/base :: params(~{::title}, ~{::section}, ~{::link}, ~{::script})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Please find the lowest price!</title>
+    <script type="text/javascript" th:src="@{/js/product-view.js}"></script>
+</head>
+<body>
+<section class="p-6">
+    <div class="bg-gray-100">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-wrap -mx-4">
+                <!-- Product Images -->
+                <div class="w-full md:w-1/2 px-4 mb-8">
+                    <img th:if="${!product.productImages.isEmpty()}" th:src="${product.productImages[0].storeName}" th:alt="${product.name}"
+                         class="w-full h-auto rounded-lg shadow-md mb-4" id="mainImage">
+                    <div class="flex gap-4 py-4 justify-center overflow-x-auto">
+                        <img th:each="productImage: ${product.productImages}" th:src="${productImage.storeName}" th:alt="${productImage.uploadName}"
+                             class="w-20 h-20 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                             onmouseover="changeImage(this.src)">
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="w-full md:w-1/2 px-4">
+                    <div class="flex items-center">
+                        <h2 class="text-3xl font-bold mb-2" th:text="${product.name}">Premium Wireless Headphones</h2>
+                        <a th:href="${product.url}" target="_blank"><img src="/images/open_in_new.svg" class="w-8 ml-3" alt="Site URL for sale"></a>
+                    </div>
+                    <p class="text-gray-600 mb-4">Model No.: <span th:text="${product.modelNo}">WH1000XM4</span></p>
+                    <div class="mb-4">
+                        <span class="text-2xl font-bold mr-2" th:text="|&bsol;${#numbers.formatInteger(product.price, 1, 'COMMA')}|">$349.99</span>
+                    </div>
+
+                    <p class="text-gray-700 mb-6" th:text="${product.description}">Experience premium sound quality and industry-leading noise cancellation
+                        with
+                        these wireless headphones. Perfect for music lovers and frequent travelers.</p>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Site URL for sale:</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li><a th:href="${product.url}" target="_blank" th:text="${product.url}">URL</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

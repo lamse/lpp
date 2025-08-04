@@ -17,7 +17,7 @@ import java.util.Objects;
 @Aspect
 @Component
 public class LoginCheckAspect {
-    @Around("hey.lpp.aop.Pointcuts.allProduct()")
+    @Around("hey.lpp.aop.Pointcuts.allProduct() && !hey.lpp.aop.Pointcuts.viewProduct()")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info("[log] {}", joinPoint.getSignature());
 

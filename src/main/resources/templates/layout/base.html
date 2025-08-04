@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
-<html th:fragment="params (title, content, links)" xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:replace="~{fragment/header :: common_header(title=${title},links=${links})}"></div>
+<html th:fragment="params (title, content, links, scripts)" xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:replace="~{fragment/header :: common_header(title=${title},links=${links}, scripts=${scripts})}"></div>
 <body>
 <div th:replace="~{fragment/gnb :: gnb}"></div>
 <div th:replace="${content}">

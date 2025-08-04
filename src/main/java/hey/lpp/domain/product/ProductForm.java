@@ -14,8 +14,7 @@ public class ProductForm {
     @NotEmpty
     private String name;
 
-    @ValidFile(allowFileDefines = {"jpeg", "png", "jpg"}, message = "이미지 파일을 1개 이상 선택해 주세요.")
-    private List<MultipartFile> imageFiles;
+    private String ModelNo;
 
     @NotEmpty
     @URL
@@ -24,4 +23,7 @@ public class ProductForm {
     private Integer price;
 
     private String description;
+
+    @ValidFile(allowFileDefines = {"jpeg", "png", "jpg"}, message = "이미지 파일을 1개 이상 선택해 주세요.")
+    private List<MultipartFile> imageFiles;
 }

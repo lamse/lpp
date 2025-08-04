@@ -1,8 +1,10 @@
 package hey.lpp.controller.product;
 
 import hey.lpp.Constant.SessionConst;
+import hey.lpp.domain.product.Product;
 import hey.lpp.domain.product.ProductForm;
 import hey.lpp.domain.user.User;
+import hey.lpp.repository.product.ProductRepository;
 import hey.lpp.repository.user.UserRepository;
 import hey.lpp.service.product.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,16 +15,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/product")
 public class ProductController {
-    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
     private final ProductService productService;
 
     @GetMapping("/add")
@@ -42,5 +44,16 @@ public class ProductController {
         productService.add(productForm, user);
 
         return "redirect:/";
+    }
+
+    @GetMapping("{id}")
+    public String viewProduct(@PathVariable Long id, Model model) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            return "error/404"; // 상품이 존재하지 않을 경우 404 페이지로 이동
+        }
+
+        model.addAttribute("product", product.get());
+        return "product/viewProduct";
     }
 }

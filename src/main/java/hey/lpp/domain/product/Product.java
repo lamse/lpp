@@ -25,6 +25,8 @@ public class Product {
     @NotEmpty
     private String name;
 
+    private String ModelNo;
+
     @NotEmpty
     private String url;
 

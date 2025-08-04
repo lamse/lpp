@@ -30,6 +30,7 @@ public class ProductService {
         Product product = new Product();
         product.setUser(user);
         product.setName(productForm.getName());
+        product.setModelNo(productForm.getModelNo());
         product.setUrl(productForm.getUrl());
         product.setPrice(productForm.getPrice());
         product.setDescription(productForm.getDescription());
