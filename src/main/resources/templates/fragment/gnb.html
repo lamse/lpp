@@ -7,13 +7,13 @@
         <div class="flex gap-2" th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] != null}">
             <form th:action="@{/logout}" method="post">
                 <button class="bg-blue-100 rounded-md p-1 px-2" type="submit">
-                    로그아웃
+                    Logout
                 </button>
             </form>
-            <a class="bg-blue-100 rounded-md p-1 px-2" href="/product/add" th:href="@{/product/add}">상품등록</a>
+            <a class="bg-blue-100 rounded-md p-1 px-2" href="/product/add" th:href="@{/product/add}">Add Proudct</a>
         </div>
         <div th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] == null}">
-            <a class="bg-blue-100 rounded-md p-1 px-2" href="/login" th:href="@{/login}">로그인</a>
+            <a class="bg-blue-100 rounded-md p-1 px-2" href="/login" th:href="@{/login}">Login</a>
         </div>
     </div>
 </div>

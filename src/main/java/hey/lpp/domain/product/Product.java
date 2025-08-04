@@ -28,6 +28,10 @@ public class Product {
     @NotEmpty
     private String url;
 
+    private Integer price;
+
+    private String description;
+
     @OneToMany(fetch= FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private List<ProductImage> productImages;

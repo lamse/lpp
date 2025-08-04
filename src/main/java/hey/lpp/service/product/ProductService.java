@@ -31,6 +31,8 @@ public class ProductService {
         product.setUser(user);
         product.setName(productForm.getName());
         product.setUrl(productForm.getUrl());
+        product.setPrice(productForm.getPrice());
+        product.setDescription(productForm.getDescription());
         Product saveProduct = productRepository.save(product);
 
         List<UploadFile> imageFiles = fileStore.storeFiles(productForm.getImageFiles());

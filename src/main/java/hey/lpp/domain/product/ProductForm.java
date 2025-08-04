@@ -20,4 +20,8 @@ public class ProductForm {
     @NotEmpty
     @URL
     private String url;
+
+    private Integer price;
+
+    private String description;
 }
