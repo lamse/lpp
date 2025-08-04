@@ -64,6 +64,6 @@ public class LoginController {
             session.removeAttribute(SessionConst.LOGIN_USER);
         }
 
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

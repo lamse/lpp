@@ -1,8 +1,6 @@
 package hey.lpp.util;
 
 import hey.lpp.domain.product.UploadFile;
-import jakarta.servlet.ServletContext;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,24 +11,28 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class FileStore {
-    private final ServletContext servletContext;
 
     @Value("${file.dir}")
     private String fileDir;
+    private final String yearMonthDay;
+
+    public FileStore() {
+        yearMonthDay = FilenameUtil.getYearMonthDay();
+    }
 
     public String getFullPath(String filename) {
-        String directoryPath = servletContext.getRealPath("/");
-        log.info("directoryPath: {}", directoryPath);
-        String targetDir = createDateDirectory(directoryPath + fileDir + File.separator + "product");
+        String rootPath = System.getProperty("user.dir");
+        log.info("directoryPath: {}", rootPath);
+        String staticDir = "/src/main/resources/static";
+        String targetDir = createDateDirectory(rootPath + staticDir + fileDir + File.separator
+                + "product" + File.separator + yearMonthDay);
         return targetDir + File.separator + filename;
     }
 
@@ -40,8 +42,7 @@ public class FileStore {
             if (file.isEmpty()) {
                 continue; // 파일이 비어있으면 건너뜀
             }
-            UploadFile uploadFile = storeFile(file); // 저장할 파일 이름 생성
-            uploadFiles.add(uploadFile);
+            uploadFiles.add(storeFile(file));
         }
 
         return uploadFiles;
@@ -57,6 +58,7 @@ public class FileStore {
         String storeFilename = createStoreFileName(originalFilename); // 저장할 파일 이름 생성
         String storeFilePath = getFullPath(storeFilename);
         multipartFile.transferTo(new File(storeFilePath)); // 파일 저장
+        storeFilePath = fileDir + "product/" + yearMonthDay + "/" + storeFilename; // web 경로로 변경
 
         return new UploadFile(originalFilename, storeFilePath); // 업로드된 파일 정보 반환
     }
@@ -68,16 +70,7 @@ public class FileStore {
     }
 
     public static String createDateDirectory(String baseDir) {
-        LocalDate currentDate = LocalDate.now();
-
-        // Format the date components for directory names
-        String year = String.valueOf(currentDate.getYear());
-        String month = String.format("%02d", currentDate.getMonthValue());
-        String day = String.format("%02d", currentDate.getDayOfMonth());
-
-
-        Path targetDir = Paths.get(baseDir, year, month, day);
-
+        Path targetDir = Paths.get(baseDir);
         try {
             // Create the directories, including any non-existent parent directories
             Files.createDirectories(targetDir);

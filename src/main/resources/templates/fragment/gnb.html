@@ -1,19 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="gnb" class="mt-4 mx-2 flex justify-center">
-    <div th:if="!${loginPage}" class="mt-4 flex gap-2">
-        <a class="bg-blue-100 rounded-md p-1 px-2" href="/">Home</a>
-        <div class="flex gap-2" th:if="${session.containsKey(T(hey.lpp.Constant.SessionConst).LOGIN_USER)}">
+    <div th:if="!${loginPage}" class="mt-4 flex items-center gap-2">
+        <div>
+            <a class="bg-blue-100 rounded-md p-1 px-2" href="/">Home</a>
+        </div>
+        <div class="flex gap-2" th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] != null}">
             <form th:action="@{/logout}" method="post">
                 <button class="bg-blue-100 rounded-md p-1 px-2" type="submit">
                     로그아웃
                 </button>
-                <!--                <span th:text="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER]}">로그인 사용자</span>-->
             </form>
             <a class="bg-blue-100 rounded-md p-1 px-2" href="/product/add" th:href="@{/product/add}">상품등록</a>
         </div>
-
-        <span th:if="${!session.containsKey(T(hey.lpp.Constant.SessionConst).LOGIN_USER)}">
+        <div th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] == null}">
             <a class="bg-blue-100 rounded-md p-1 px-2" href="/login" th:href="@{/login}">로그인</a>
-        </span>
+        </div>
     </div>
 </div>
