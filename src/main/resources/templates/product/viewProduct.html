@@ -53,9 +53,13 @@
                                                 <a th:href="${productOffer.url}" target="_blank" th:text="${productOffer.url}">URL</a>
                                             </p>
                                         </div>
-                                        <div class="mt-4 flex items-center justify-between">
-                                            <p class="text-sm font-medium">Offerer:
-                                                <span class="text-gray-500" th:text="${productOffer.user.name}">Offerer</span></p>
+                                        <div class="flex items-center justify-between">
+                                            <div class="text-sm font-medium flex">
+                                                <div>Offerer:
+                                                    <span class="text-gray-500" th:text="${productOffer.user.name}">Offerer</span>
+                                                </div>
+                                                <button class="openChat ml-1" type="button"><span class="material-icons">chat</span></button>
+                                            </div>
                                             <button type="submit" th:if="${product.isRegistrant() && productOffer.choose.toString() == 'N'}">
                                                 <span class="material-icons text-blue-500 hover:text-blue-600">thumb_up</span>
                                             </button>
@@ -75,7 +79,6 @@
                                 <div class="mt-2">
                                     <input id="url" type="url" name="url" required autocomplete="url"
                                            class="block w-full rounded-md px-3 py-1.5 border border-gray-300" />
-
                                 </div>
                             </div>
 
@@ -96,7 +99,61 @@
             </div>
         </div>
     </div>
+    <div id="chatModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white w-1/2 p-6 rounded shadow-md">
+                <div class="flex justify-end mb-4">
+                    <!-- Close Button -->
+                    <button id="closeChat" class="text-gray-700 hover:text-red-500">
+                        <svg class="w-6 h-6" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg border p-2 my-4 mx-6">
+                    <h3 class="font-bold">Discussion</h3>
+                    <form>
+                        <div class="flex flex-col">
+                            <div class="border rounded-md p-3 ml-3 my-3">
+                                <div class="flex gap-3 items-center">
+                                    <h3 class="font-bold">
+                                        User name
+                                    </h3>
+                                </div>
+                                <p class="text-gray-600 mt-2">
+                                    this is sample comment
+                                </p>
+                            </div>
+                            <div class="border rounded-md p-3 ml-3 my-3">
+                                <div class="flex gap-3 items-center">
+                                    <h3 class="font-bold">
+                                        User name
+                                    </h3>
+                                </div>
+                                <p class="text-gray-600 mt-2">
+                                    this is sample comment
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full pl-3 my-2">
+                            <label>
+                            <textarea
+                                class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                                name="body" placeholder='Type Your Comment' required></textarea>
+                            </label>
+                        </div>
 
+                        <div class="w-full flex justify-end px-3">
+                            <input type='submit' class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500"
+                                   value='Post Comment'>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 </body>
 </html>
