@@ -42,12 +42,6 @@
 
                     <div>
                         <h3 class="text-lg font-semibold mb-2">offering lower prices</h3>
-                        <div class="list-disc list-inside text-gray-700">
-                            <div th:each="productOffer: ${product.productOffers}" class="flex items-center justify-between">
-                                <div><a th:href="${productOffer.url}" target="_blank" th:text="${productOffer.url}">URL</a></div>
-                                <div th:text="|&bsol;${#numbers.formatInteger(productOffer.price, 1, 'COMMA')}|">Price</div>
-                            </div>
-                        </div>
                         <ul class="bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-2">
                             <li th:each="productOffer: ${product.productOffers}">
                                 <form action="" th:action="@{/product/{id}/offer/choose/{offerId}(id=${product.id}, offerId=${productOffer.id})}" method="post">

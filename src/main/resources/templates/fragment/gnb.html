@@ -1,19 +1,84 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="gnb" class="mt-4 mx-2 flex justify-center">
-    <div th:if="!${loginPage}" class="mt-4 flex items-center gap-2">
-        <div>
-            <a class="bg-blue-100 rounded-md p-1 px-2" href="/">Home</a>
-        </div>
-        <div class="flex gap-2" th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] != null}">
-            <form th:action="@{/logout}" method="post">
-                <button class="bg-blue-100 rounded-md p-1 px-2" type="submit">
-                    Logout
-                </button>
-            </form>
-            <a class="bg-blue-100 rounded-md p-1 px-2" href="/product/add" th:href="@{/product/add}">Add Proudct</a>
-        </div>
-        <div th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] == null}">
-            <a class="bg-blue-100 rounded-md p-1 px-2" href="/login" th:href="@{/login}">Login</a>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<nav th:fragment="gnb">
+    <div class='w-full py-3 border-b'>
+        <div class='flex justify-between px-20 items-center font-semibold'>
+            <div>
+                <h1 class="text-2xl">LPP</h1>
+            </div>
+            <div class='flex xl:gap-10 md:gap-8  gap-2'>
+                <a href="/">Home</a>
+                <th:block th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] != null}">
+                    <a href="/product/add">Add Product</a>
+                    <form th:action="@{/logout}" method="post">
+                        <button class="font-bold" type="submit">
+                            Logout
+                        </button>
+                    </form>
+                </th:block>
+                <a  th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] == null}" href="/login">Login</a>
+            </div>
+            <div>
+                <button id="openTechStack" class='py-2 px-6 bg-black text-white rounded-3xl font-semibold'>Tech Stack</button>
+            </div>
         </div>
     </div>
-</div>
+    <div id="techStackModal" class="fixed z-10 inset-0 overflow-y-auto mt-4 hidden">
+        <div class="flex items-center justify-end mr-52">
+            <div class="bg-white w-1/2 p-6 rounded shadow-md border">
+                <div class="flex justify-end mb-4">
+                    <!-- Close Button -->
+                    <button id="closeTechStack" class="text-gray-700 hover:text-red-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">Java</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">Spring Data JPA</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/thymeleaf/thymeleaf-original.svg" alt="Thymeleaf" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">Thymeleaf</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mariadb/mariadb-original.svg" alt="MariaDB" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">MariaDB</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="TailwindCSS" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">TailwindCSS</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">Git</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        // JavaScript to toggle the modal
+        const openTechStackButton = document.getElementById('openTechStack');
+        const closeTechStackButton = document.getElementById('closeTechStack');
+        const techStackModal = document.getElementById('techStackModal');
+
+        openTechStackButton.addEventListener('click', () => {
+            techStackModal.classList.remove('hidden');
+        });
+
+        closeTechStackButton.addEventListener('click', () => {
+            techStackModal.classList.add('hidden');
+        });
+
+
+    </script>
+</nav>
