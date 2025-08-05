@@ -1,6 +1,7 @@
 package hey.lpp.util;
 
 import hey.lpp.domain.product.UploadFile;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,6 @@ public class FileStore {
 
     public FileStore() {
         yearMonthDay = FilenameUtil.getYearMonthDay();
-        createSaveDirectory();
     }
 
     public String getFullPath(String filename) {
@@ -33,12 +33,14 @@ public class FileStore {
         return rootPath + fileDir + filename;
     }
 
+    @PostConstruct
     public void createSaveDirectory() {
         String rootPath = System.getProperty("user.dir");
         log.info("directoryPath: {}", rootPath);
         Path targetDir = Paths.get(rootPath + fileDir + yearMonthDay);
         try {
             // Create the directories, including any non-existent parent directories
+            log.info("Creating directory: {}", targetDir);
             Files.createDirectories(targetDir);
         } catch (IOException e) {
             log.info("Failed to create directory {}", targetDir, e);
