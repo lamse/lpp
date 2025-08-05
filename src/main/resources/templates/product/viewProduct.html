@@ -4,6 +4,7 @@
 <head>
     <title>Please find the lowest price!</title>
     <script type="text/javascript" th:src="@{/js/product-view.js}"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <section class="p-6">
@@ -27,16 +28,17 @@
                 <div class="w-full md:w-1/2 px-4">
                     <div class="flex items-center">
                         <h2 class="text-3xl font-bold mb-2" th:text="${product.name}">Premium Wireless Headphones</h2>
-                        <a th:href="${product.url}" target="_blank"><img src="/images/open_in_new.svg" class="w-8 ml-3" alt="Site URL for sale"></a>
+                        <a th:href="${product.url}" class="text-3xl ml-1" target="_blank">
+                            <span class="material-icons text-blue-500 hover:text-blue-600">open_in_new</span>
+                        </a>
                     </div>
-                    <p class="text-gray-600 mb-4">Model No.: <span th:text="${product.modelNo}">WH1000XM4</span></p>
+                    <p>Model No: <span class="text-gray-600" th:text="${product.modelNo}">WH1000XM4</span></p>
+                    <p class="mb-4">Registrant: <span class="text-gray-600" th:text="${product.user.name}">Registrant</span></p>
                     <div class="mb-4">
                         <span class="text-2xl font-bold mr-2" th:text="|&bsol;${#numbers.formatInteger(product.price, 1, 'COMMA')}|">$349.99</span>
                     </div>
 
-                    <p class="text-gray-700 mb-6" th:text="${product.description}">Experience premium sound quality and industry-leading noise cancellation
-                        with
-                        these wireless headphones. Perfect for music lovers and frequent travelers.</p>
+                    <p class="text-gray-700 mb-6" th:text="${product.description}">description</p>
 
                     <div>
                         <h3 class="text-lg font-semibold mb-2">offering lower prices</h3>
@@ -46,6 +48,29 @@
                                 <div th:text="|&bsol;${#numbers.formatInteger(productOffer.price, 1, 'COMMA')}|">Price</div>
                             </div>
                         </div>
+                        <ul class="bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-2">
+                            <li th:each="productOffer: ${product.productOffers}">
+                                <form action="" th:action="@{/product/{id}/offer/choose/{offerId}(id=${product.id}, offerId=${productOffer.id})}" method="post">
+                                    <div class="px-2 py-2 sm:px-6">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                                th:text="|&bsol;${#numbers.formatInteger(productOffer.price, 1, 'COMMA')}|">Price</h3>
+                                            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                                                <a th:href="${productOffer.url}" target="_blank" th:text="${productOffer.url}">URL</a>
+                                            </p>
+                                        </div>
+                                        <div class="mt-4 flex items-center justify-between">
+                                            <p class="text-sm font-medium">Offerer:
+                                                <span class="text-gray-500" th:text="${productOffer.user.name}">Offerer</span></p>
+                                            <button type="submit" th:if="${product.isRegistrant() && productOffer.choose.toString() == 'N'}">
+                                                <span class="material-icons text-blue-500 hover:text-blue-600">thumb_up</span>
+                                            </button>
+                                            <span th:if="${productOffer.choose.toString() == 'Y'}" class="material-icons text-green-600">done_all</span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
 
                     <div class="mt-6">

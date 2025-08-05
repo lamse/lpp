@@ -1,6 +1,7 @@
 package hey.lpp.domain.product;
 
 import hey.lpp.domain.YesNo;
+import hey.lpp.domain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,9 @@ public class ProductOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    private User user;
 
     @Column(name="product_id")
     private Long productId;

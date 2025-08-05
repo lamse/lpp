@@ -62,19 +62,51 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/offer")
-    public String productOffer(@PathVariable Long id, @Validated ProductOfferForm productOfferForm) {
+    public String productOffer(@PathVariable Long id, @Validated ProductOfferForm productOfferForm, HttpSession httpSession) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
             return "error/404"; // 상품이 존재하지 않을 경우 404 페이지로 이동
         }
 
         ProductOffer productOffer = new ProductOffer();
+        User user = (User) httpSession.getAttribute(SessionConst.LOGIN_USER);
         productOffer.setProductId(id);
+        productOffer.setUser(user);
         productOffer.setUrl(productOfferForm.getUrl());
         productOffer.setPrice(productOfferForm.getPrice());
         productOffer.setChoose(YesNo.N);
 
         productOfferRepository.save(productOffer);
+
+        return "redirect:/product/" + id; // 상품 상세 페이지로 리다이렉트
+    }
+
+    @PostMapping("/{id}/offer/choose/{offerId}")
+    public String chooseOffer(@PathVariable Long id, @PathVariable Long offerId, HttpSession httpSession) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            return "error/404"; // 상품이 존재하지 않을 경우 404 페이지로 이동
+        }
+
+        Optional<ProductOffer> offer = productOfferRepository.findById(offerId);
+        if (offer.isEmpty() || !offer.get().getProductId().equals(id)) {
+            return "error/404"; // 제안이 존재하지 않거나 상품과 일치하지 않는 경우 404 페이지로 이동
+        }
+
+        User user = (User) httpSession.getAttribute(SessionConst.LOGIN_USER);
+        if (user == null || !user.getId().equals(product.get().getUser().getId())) {
+            return "error/403"; // 권한이 없는 경우 403 페이지로 이동
+        }
+
+        product.get().getProductOffers().stream().filter(
+            po -> po.getChoose() == YesNo.Y
+        ).forEach(po -> {
+            po.setChoose(YesNo.N); // 기존 선택된 제안은 선택 해제
+            productOfferRepository.save(po);
+        });
+
+        offer.get().setChoose(YesNo.Y);
+        productOfferRepository.save(offer.get());
 
         return "redirect:/product/" + id; // 상품 상세 페이지로 리다이렉트
     }

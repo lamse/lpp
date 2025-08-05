@@ -1,15 +1,21 @@
 package hey.lpp.domain.product;
 
+import hey.lpp.Constant.SessionConst;
 import hey.lpp.domain.user.User;
 import jakarta.persistence.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -47,4 +53,11 @@ public class Product {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public boolean isRegistrant() {
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        HttpSession session = request.getSession();
+        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        return loginUser != null && this.user.getId().equals(loginUser.getId());
+    }
 }

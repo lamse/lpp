@@ -49,3 +49,10 @@ CREATE TABLE `product_offer` (
   KEY `product_offer_product_id_index` (`product_id`),
   CONSTRAINT `product_offer_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+alter table product_offer
+    add user_id bigint not null after id;
+
+alter table product_offer
+    add constraint product_offer_user_id_fk
+        foreign key (user_id) references user (id);
