@@ -12,10 +12,12 @@
             <div class="flex flex-wrap -mx-4">
                 <!-- Product Images -->
                 <div class="w-full md:w-1/2 px-4 mb-8">
-                    <img th:if="${!product.productImages.isEmpty()}" th:src="${product.productImages[0].storeName}" th:alt="${product.name}"
+                    <img th:if="${!product.productImages.isEmpty()}" th:alt="${product.name}"
+                         th:src="@{/uploads/images/{filename}(filename=${product.productImages[0].storeName})}"
                          class="w-full h-auto rounded-lg shadow-md mb-4" id="mainImage">
                     <div class="flex gap-4 py-4 justify-center overflow-x-auto">
-                        <img th:each="productImage: ${product.productImages}" th:src="${productImage.storeName}" th:alt="${productImage.uploadName}"
+                        <img th:each="productImage: ${product.productImages}" th:alt="${productImage.uploadName}"
+                             th:src="@{/uploads/images/{filename}(filename=${productImage.storeName})}"
                              class="w-20 h-20 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
                              onmouseover="changeImage(this.src)">
                     </div>

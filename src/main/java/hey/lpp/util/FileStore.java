@@ -19,21 +19,30 @@ import java.util.UUID;
 @Component
 public class FileStore {
 
-    @Value("${file.dir}")
+    @Value("${upload.image.dir}")
     private String fileDir;
     private final String yearMonthDay;
 
     public FileStore() {
         yearMonthDay = FilenameUtil.getYearMonthDay();
+        createSaveDirectory();
     }
 
     public String getFullPath(String filename) {
         String rootPath = System.getProperty("user.dir");
+        return rootPath + fileDir + filename;
+    }
+
+    public void createSaveDirectory() {
+        String rootPath = System.getProperty("user.dir");
         log.info("directoryPath: {}", rootPath);
-        String staticDir = "/src/main/resources/static";
-        String targetDir = createDateDirectory(rootPath + staticDir + fileDir + File.separator
-                + "product" + File.separator + yearMonthDay);
-        return targetDir + File.separator + filename;
+        Path targetDir = Paths.get(rootPath + fileDir + yearMonthDay);
+        try {
+            // Create the directories, including any non-existent parent directories
+            Files.createDirectories(targetDir);
+        } catch (IOException e) {
+            log.info("Failed to create directory {}", targetDir, e);
+        }
     }
 
     public List<UploadFile> storeFiles(List<MultipartFile> files) throws IOException {
@@ -58,26 +67,13 @@ public class FileStore {
         String storeFilename = createStoreFileName(originalFilename); // 저장할 파일 이름 생성
         String storeFilePath = getFullPath(storeFilename);
         multipartFile.transferTo(new File(storeFilePath)); // 파일 저장
-        storeFilePath = fileDir + "product/" + yearMonthDay + "/" + storeFilename; // web 경로로 변경
 
-        return new UploadFile(originalFilename, storeFilePath); // 업로드된 파일 정보 반환
+        return new UploadFile(originalFilename, storeFilename.replace("/", "_")); // 업로드된 파일 정보 반환
     }
 
     private String createStoreFileName(String originalFilename) {
         String ext = FilenameUtil.getExtension(originalFilename);
         String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
-    }
-
-    public static String createDateDirectory(String baseDir) {
-        Path targetDir = Paths.get(baseDir);
-        try {
-            // Create the directories, including any non-existent parent directories
-            Files.createDirectories(targetDir);
-        } catch (IOException e) {
-            log.info("Failed to create directory {}", targetDir, e);
-        }
-
-        return targetDir.toString();
+        return yearMonthDay + "/" + uuid + "." + ext;
     }
 }
