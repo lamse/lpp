@@ -37,10 +37,39 @@
                         these wireless headphones. Perfect for music lovers and frequent travelers.</p>
 
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Site URL for sale:</h3>
-                        <ul class="list-disc list-inside text-gray-700">
-                            <li><a th:href="${product.url}" target="_blank" th:text="${product.url}">URL</a></li>
-                        </ul>
+                        <h3 class="text-lg font-semibold mb-2">offering lower prices</h3>
+                        <div class="list-disc list-inside text-gray-700">
+                            <div th:each="productOffer: ${product.productOffers}" class="flex items-center justify-between">
+                                <div><a th:href="${productOffer.url}" target="_blank" th:text="${productOffer.url}">URL</a></div>
+                                <div th:text="|&bsol;${#numbers.formatInteger(productOffer.price, 1, 'COMMA')}|">Price</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold mb-2">New offer at a lower price</h3>
+                        <form action="" th:action="@{/product/{id}/offer(id=${product.id})}" method="post">
+                            <div>
+                                <label for="url" class="block text-sm/6 font-medium text-gray-900">URL</label>
+                                <div class="mt-2">
+                                    <input id="url" type="url" name="url" required autocomplete="url"
+                                           class="block w-full rounded-md px-3 py-1.5 border border-gray-300" />
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="price" class="block text-sm/6 font-medium text-gray-900">Price</label>
+                                <div class="mt-2">
+                                    <input id="price" type="number" name="price" required autocomplete="price"
+                                           class="block w-full rounded-md px-3 py-1.5 border border-gray-300" />
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between mt-4">
+                                <button type="submit" class="w-full text-center rounded-md bg-indigo-600 px-3 py-1.5 text-white">Offer</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

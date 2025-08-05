@@ -24,8 +24,18 @@ public class LoginCheckAspect {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
+            String targetUri = request.getRequestURI();
+            if (request.getMethod().equals("POST")) {
+                targetUri = "/";
+                // POST 요청인 경우, Referer 헤더를 사용하여 이전 페이지로 돌아갈 수 있도록 함
+                String referer = request.getHeader("Referer");
+                if (referer != null) {
+                    targetUri = referer;
+                }
+            }
+
             // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
-            return "redirect:/login?redirectURL=" + request.getRequestURI();
+            return "redirect:/login?redirectURL=" + targetUri;
         }
         return joinPoint.proceed();
     }

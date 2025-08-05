@@ -1,46 +1,35 @@
 package hey.lpp.domain.product;
 
-import hey.lpp.domain.user.User;
+import hey.lpp.domain.YesNo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Product {
+public class ProductOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    private User user;
-
-    @NotEmpty
-    private String name;
-
-    private String ModelNo;
+    @Column(name="product_id")
+    private Long productId;
 
     @NotEmpty
     private String url;
 
+    @NotNull
     private Integer price;
 
-    private String description;
-
-    @OneToMany(fetch= FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    private List<ProductImage> productImages;
-
-    @OneToMany(fetch= FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    private List<ProductOffer> productOffers;
+    @Enumerated(EnumType.STRING)
+    private YesNo choose;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
