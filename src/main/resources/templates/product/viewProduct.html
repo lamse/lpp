@@ -33,7 +33,8 @@
                         </a>
                     </div>
                     <p>Model No: <span class="text-gray-600" th:text="${product.modelNo}">WH1000XM4</span></p>
-                    <p class="mb-4">Registrant: <span class="text-gray-600" th:text="${product.user.name}">Registrant</span></p>
+                    <p>Registrant: <span class="text-gray-600"  th:text="${product.user.name}">Registrant</span></p>
+                    <p class="mb-4">Registration date: <span class="text-gray-600 text-sm" th:text="${#temporals.format(product.createdAt, 'yyyy-MM-dd HH:mm')}">2023-10-01 12:00</span></p>
                     <div class="mb-4">
                         <span class="text-2xl font-bold mr-2" th:text="|&bsol;${#numbers.formatInteger(product.price, 1, 'COMMA')}|">$349.99</span>
                     </div>
@@ -56,9 +57,10 @@
                                         <div class="flex items-center justify-between">
                                             <div class="text-sm font-medium flex">
                                                 <div>Offerer:
-                                                    <span class="text-gray-500" th:text="${productOffer.user.name}">Offerer</span>
+                                                    <span class="text-gray-500" th:text="${productOffer.user.name}">Offerer</span> |
+                                                    <span class="text-gray-600 text-sm" th:text="${#temporals.format(productOffer.createdAt, 'yyyy-MM-dd HH:mm')}">2023-10-01 12:00</span>
                                                 </div>
-                                                <button class="openChat ml-1" th:attr="data-id=${productOffer.id}" type="button"><span class="material-icons">chat</span></button>
+                                                <button class="openChat ml-2" th:attr="data-id=${productOffer.id}" type="button"><span class="material-icons">chat</span></button>
                                             </div>
                                             <button type="submit" th:if="${product.isRegistrant() && productOffer.choose.toString() == 'N'}">
                                                 <span class="material-icons text-blue-500 hover:text-blue-600">thumb_up</span>

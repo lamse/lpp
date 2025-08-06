@@ -56,3 +56,17 @@ alter table product_offer
 alter table product_offer
     add constraint product_offer_user_id_fk
         foreign key (user_id) references user (id);
+
+CREATE TABLE `product_offer_chat` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `product_offer_id` bigint(20) NOT NULL,
+  `comment` text NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_offer_chat_product_offer_id_fk` (`product_offer_id`),
+  KEY `product_offer_chat_user_id_fk` (`user_id`),
+  CONSTRAINT `product_offer_chat_product_offer_id_fk` FOREIGN KEY (`product_offer_id`) REFERENCES `product_offer` (`id`),
+  CONSTRAINT `product_offer_chat_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

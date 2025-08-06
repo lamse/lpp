@@ -4,9 +4,15 @@
     <div class="flex flex-col">
         <div th:each="chat: ${productOfferChats}" class="border rounded-md p-3 ml-3 my-3" th:attr="id=|chat_${chat.id}|">
             <div class="flex gap-3 items-center justify-between">
-                <h3 class="font-bold" th:text="${chat.user.name}">
-                    User name
-                </h3>
+                <div class="flex gap-3">
+                    <h3 class="font-bold" th:text="${chat.user.name}">
+                        User name
+                    </h3>
+                    <div class="text-gray-500 text-sm" th:text="${#temporals.format(chat.createdAt, 'yyyy-MM-dd HH:mm')}">
+                        2023-10-01 12:00
+                    </div>
+                </div>
+
                 <button class="text-gray-500 hover:text-red-500"
                         th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] != null && session[T(hey.lpp.Constant.SessionConst).LOGIN_USER].getId() == chat.user.id}"
                         th:onclick="deleteChat([[${chat.id}]])">
