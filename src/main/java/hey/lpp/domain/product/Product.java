@@ -56,7 +56,10 @@ public class Product {
 
     public boolean isRegistrant() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return false; // 세션이 없으면 등록자가 아님
+        }
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         return loginUser != null && this.user.getId().equals(loginUser.getId());
     }

@@ -35,8 +35,6 @@ public class LoginController {
     public String login(@Validated LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request,
             @RequestParam(defaultValue = "/") String redirectURL) {
 
-        log.info("로그인 시도: {}", loginForm);
-
         if (bindingResult.hasErrors()) {
             log.info("로그인 폼 유효성 검사 실패: {}", bindingResult.getAllErrors());
             return "login/loginForm"; // 에러가 있는 경우 다시 폼으로 이동
