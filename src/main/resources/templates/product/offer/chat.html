@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div id="chatList" class="bg-white rounded-lg border p-2 my-4 mx-6">
+    <h3 class="font-bold">Discussion</h3>
+    <div class="flex flex-col">
+        <div th:each="chat: ${productOfferChats}" class="border rounded-md p-3 ml-3 my-3" th:attr="id=|chat_${chat.id}|">
+            <div class="flex gap-3 items-center justify-between">
+                <h3 class="font-bold" th:text="${chat.user.name}">
+                    User name
+                </h3>
+                <button class="text-gray-500 hover:text-red-500"
+                        th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] != null && session[T(hey.lpp.Constant.SessionConst).LOGIN_USER].getId() == chat.user.id}"
+                        th:onclick="deleteChat([[${chat.id}]])">
+                    <span class="material-icons">delete</span>
+                </button>
+            </div>
+            <p class="text-gray-600 mt-2" th:text="${chat.comment}">
+                this is sample comment
+            </p>
+        </div>
+    </div>
+    <form method="post" th:action="@{/product/offer/chat/{id}(id=${productOfferId})}" id="commentForm" onsubmit="return addChat()">
+    <div class="w-full pl-3 my-2">
+        <label>
+            <textarea
+                class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                name="comment" placeholder='Type Your Comment' required></textarea>
+        </label>
+    </div>
+
+    <div class="w-full flex justify-end px-3">
+        <button type='submit' class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500">Post Comment</button>
+    </div>
+    </form>
+</div>

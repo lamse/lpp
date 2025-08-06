@@ -7,9 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
@@ -17,13 +19,18 @@ import java.util.Objects;
 @Aspect
 @Component
 public class LoginCheckAspect {
-    @Around("hey.lpp.aop.Pointcuts.allProduct() && !hey.lpp.aop.Pointcuts.viewProduct()")
+    @Around("hey.lpp.aop.Pointcuts.loginCheck()")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info("[log] {}", joinPoint.getSignature());
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
+            String requestedWith = request.getHeader("X-Requested-With");
+            if ("XMLHttpRequest".equals(requestedWith)) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login Required");
+            }
+
             String targetUri = request.getRequestURI();
             if (request.getMethod().equals("POST")) {
                 targetUri = "/";

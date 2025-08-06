@@ -58,10 +58,9 @@ public class LoginController {
 
     @PostMapping("/logout")
     public String logout(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User user,
-            HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+            HttpSession httpSession) {
         if (user != null) {
-            session.removeAttribute(SessionConst.LOGIN_USER);
+            httpSession.removeAttribute(SessionConst.LOGIN_USER);
         }
 
         return "redirect:/";
