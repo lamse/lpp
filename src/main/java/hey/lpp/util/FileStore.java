@@ -43,15 +43,16 @@ public class FileStore {
             log.info("Creating directory: {}", targetDir);
             Files.createDirectories(targetDir);
         } catch (IOException e) {
-            log.info("Failed to create directory {}", targetDir, e);
+            log.error("Failed to create directory {}. Transaction rollback will occur.", targetDir, e);
+            throw new RuntimeException("Failed to create upload directory", e);
         }
     }
 
-    public List<UploadFile> storeFiles(List<MultipartFile> files) throws IOException {
+    public List<UploadFile> storeFiles(List<MultipartFile> files) {
         ArrayList<UploadFile> uploadFiles = new ArrayList<>();
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
-                continue; // 파일이 비어있으면 건너뜀
+                continue;
             }
             uploadFiles.add(storeFile(file));
         }
@@ -60,17 +61,22 @@ public class FileStore {
     }
 
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    public UploadFile storeFile(MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {
-            return null; // 파일이 비어있으면 null 반환
+            return null;
         }
 
         String originalFilename = multipartFile.getOriginalFilename();
-        String storeFilename = createStoreFileName(originalFilename); // 저장할 파일 이름 생성
+        String storeFilename = createStoreFileName(originalFilename);
         String storeFilePath = getFullPath(storeFilename);
-        multipartFile.transferTo(new File(storeFilePath)); // 파일 저장
+        try {
+            multipartFile.transferTo(new File(storeFilePath));
+        } catch (IOException e) {
+            log.error("Failed to store file {}. Transaction rollback will occur.", originalFilename, e);
+            throw new RuntimeException("Failed to store file: " + originalFilename, e);
+        }
 
-        return new UploadFile(originalFilename, storeFilename.replace("/", "_")); // 업로드된 파일 정보 반환
+        return new UploadFile(originalFilename, storeFilename.replace("/", "_"));
     }
 
     private String createStoreFileName(String originalFilename) {
