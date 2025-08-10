@@ -1,4 +1,4 @@
-package hey.lpp.domain.product;
+package hey.lpp.dto.product;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.URL;
 
 @Data
 @NoArgsConstructor
-public class ProductOfferForm {
+public class ProductOfferCreateRequest {
 
     @NotEmpty
     @URL

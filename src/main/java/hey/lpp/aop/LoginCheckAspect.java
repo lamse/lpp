@@ -1,6 +1,7 @@
 package hey.lpp.aop;
 
 import hey.lpp.Constant.SessionConst;
+import hey.lpp.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +9,12 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -26,9 +28,10 @@ public class LoginCheckAspect {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
-            String requestedWith = request.getHeader("X-Requested-With");
-            if ("XMLHttpRequest".equals(requestedWith)) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login Required");
+            log.info("미인증 사용자 요청");
+
+            if (request.getRequestURI().startsWith("/api/")) {
+                return new ResponseEntity<>(ApiResponse.error(Map.of("global", "로그인이 필요합니다.")), HttpStatus.UNAUTHORIZED);
             }
 
             String targetUri = request.getRequestURI();

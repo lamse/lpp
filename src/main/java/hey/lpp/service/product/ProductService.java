@@ -1,7 +1,7 @@
 package hey.lpp.service.product;
 
 import hey.lpp.domain.product.Product;
-import hey.lpp.domain.product.ProductForm;
+import hey.lpp.dto.product.ProductCreateRequest;
 import hey.lpp.domain.product.ProductImage;
 import hey.lpp.domain.product.UploadFile;
 import hey.lpp.domain.user.User;
@@ -26,17 +26,17 @@ public class ProductService {
     private final FileStore fileStore;
 
     @SneakyThrows
-    public Product add(ProductForm productForm, User user) {
+    public Product add(ProductCreateRequest productCreateRequest, User user) {
         Product product = new Product();
         product.setUser(user);
-        product.setName(productForm.getName());
-        product.setModelNo(productForm.getModelNo());
-        product.setUrl(productForm.getUrl());
-        product.setPrice(productForm.getPrice());
-        product.setDescription(productForm.getDescription());
+        product.setName(productCreateRequest.getName());
+        product.setModelNo(productCreateRequest.getModelNo());
+        product.setUrl(productCreateRequest.getUrl());
+        product.setPrice(productCreateRequest.getPrice());
+        product.setDescription(productCreateRequest.getDescription());
         Product saveProduct = productRepository.save(product);
 
-        List<UploadFile> imageFiles = fileStore.storeFiles(productForm.getImageFiles());
+        List<UploadFile> imageFiles = fileStore.storeFiles(productCreateRequest.getImageFiles());
         for (UploadFile imageFile : imageFiles) {
             ProductImage productImage = new ProductImage();
             productImage.setProductId(saveProduct.getId());

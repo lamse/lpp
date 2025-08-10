@@ -1,7 +1,7 @@
 package hey.lpp.controller.user;
 
 import hey.lpp.Constant.SessionConst;
-import hey.lpp.domain.user.LoginForm;
+import hey.lpp.dto.user.LoginRequest;
 import hey.lpp.domain.user.User;
 import hey.lpp.service.user.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,15 +25,15 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public String loginForm(LoginForm loginForm, Model model, HttpServletRequest request) {
+    public String loginForm(LoginRequest loginRequest, Model model, HttpServletRequest request) {
         model.addAttribute("loginPage", true);
-        model.addAttribute("loginForm", loginForm);
+        model.addAttribute("loginForm", loginRequest);
         return "login/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(@Validated LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request,
-            @RequestParam(defaultValue = "/") String redirectURL) {
+    public String login(@Validated LoginRequest loginRequest, BindingResult bindingResult, HttpServletRequest request,
+                        @RequestParam(defaultValue = "/") String redirectURL) {
 
         if (bindingResult.hasErrors()) {
             log.info("로그인 폼 유효성 검사 실패: {}", bindingResult.getAllErrors());
@@ -41,7 +41,7 @@ public class LoginController {
         }
 
         // 로그인 처리 로직
-        User user = loginService.login(loginForm);
+        User user = loginService.login(loginRequest);
         if (user == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다."); // 로그인 실패 메시지 추가
             return "login/loginForm"; // 로그인 실패 시 다시 폼으로 이동

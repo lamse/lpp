@@ -1,6 +1,6 @@
 package hey.lpp.service.user;
 
-import hey.lpp.domain.user.LoginForm;
+import hey.lpp.dto.user.LoginRequest;
 import hey.lpp.domain.user.User;
 import hey.lpp.repository.user.UserRepository;
 import hey.lpp.util.PasswordUtil;
@@ -18,7 +18,7 @@ public class LoginService {
     private final UserRepository userRepository;
 
     @SneakyThrows
-    public User login (LoginForm form) {
+    public User login (LoginRequest form) {
         User user = userRepository.findByEmail((form.getEmail()))
                 .orElse(null);
         if (user == null) {

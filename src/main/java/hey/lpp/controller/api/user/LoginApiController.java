@@ -1,10 +1,10 @@
 package hey.lpp.controller.api.user;
 
 import hey.lpp.Constant.SessionConst;
-import hey.lpp.domain.user.LoginForm;
+import hey.lpp.dto.user.LoginRequest;
 import hey.lpp.domain.user.User;
 import hey.lpp.dto.ApiResponse;
-import hey.lpp.dto.LoginResponseDto;
+import hey.lpp.dto.user.UserDto;
 import hey.lpp.service.user.LoginService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class LoginApiController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<?>> login(
-            @Validated @RequestBody LoginForm loginForm,
+            @Validated @RequestBody LoginRequest loginRequest,
             BindingResult bindingResult,
             HttpSession session) {
 
@@ -47,7 +47,7 @@ public class LoginApiController {
         }
 
         // 로그인 처리 로직
-        User user = loginService.login(loginForm);
+        User user = loginService.login(loginRequest);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error(Map.of("global", "아이디 또는 비밀번호가 일치하지 않습니다.")));
         }
@@ -55,7 +55,7 @@ public class LoginApiController {
         user.setPassword(null); // 보안을 위해 세션에 저장하기 전에 비밀번호를 제거
         session.setAttribute(SessionConst.LOGIN_USER, user);
 
-        return ResponseEntity.ok(ApiResponse.success(new LoginResponseDto(user)));
+        return ResponseEntity.ok(ApiResponse.success(new UserDto(user)));
     }
 
     @PostMapping("/logout")

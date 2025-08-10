@@ -1,6 +1,8 @@
-package hey.lpp.domain.product;
+package hey.lpp.dto.product;
 
+import hey.lpp.domain.product.ValidFile;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ProductForm {
+public class ProductCreateRequest {
 
     @NotEmpty
     private String name;
@@ -20,6 +22,7 @@ public class ProductForm {
     @URL
     private String url;
 
+    @NotNull
     private Integer price;
 
     private String description;

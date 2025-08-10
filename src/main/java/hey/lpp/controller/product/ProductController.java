@@ -3,9 +3,9 @@ package hey.lpp.controller.product;
 import hey.lpp.Constant.SessionConst;
 import hey.lpp.domain.YesNo;
 import hey.lpp.domain.product.Product;
-import hey.lpp.domain.product.ProductForm;
+import hey.lpp.dto.product.ProductCreateRequest;
 import hey.lpp.domain.product.ProductOffer;
-import hey.lpp.domain.product.ProductOfferForm;
+import hey.lpp.dto.product.ProductOfferCreateRequest;
 import hey.lpp.domain.user.User;
 import hey.lpp.repository.product.ProductOfferRepository;
 import hey.lpp.repository.product.ProductRepository;
@@ -34,18 +34,18 @@ public class ProductController {
     @GetMapping("/add")
     public String addProductForm(Model model, HttpServletRequest request) {
         model.addAttribute("referer", request.getHeader("Referer"));
-        model.addAttribute("productForm", new ProductForm());
+        model.addAttribute("productCreateRequest", new ProductCreateRequest());
         return "product/addProductForm";
     }
 
     @PostMapping("/add")
-    public String addProduct(@Validated ProductForm productForm, BindingResult bindingResult, HttpSession httpSession) {
+    public String addProduct(@Validated ProductCreateRequest productCreateRequest, BindingResult bindingResult, HttpSession httpSession) {
 
         if (bindingResult.hasErrors()) {
             return "product/addProductForm";
         }
         User user = (User) httpSession.getAttribute(SessionConst.LOGIN_USER);
-        productService.add(productForm, user);
+        productService.add(productCreateRequest, user);
 
         return "redirect:/";
     }
@@ -62,7 +62,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/offer")
-    public String productOffer(@PathVariable Long id, @Validated ProductOfferForm productOfferForm, HttpSession httpSession) {
+    public String productOffer(@PathVariable Long id, @Validated ProductOfferCreateRequest productOfferCreateRequest, HttpSession httpSession) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
             return "error/404"; // 상품이 존재하지 않을 경우 404 페이지로 이동
@@ -72,8 +72,8 @@ public class ProductController {
         User user = (User) httpSession.getAttribute(SessionConst.LOGIN_USER);
         productOffer.setProductId(id);
         productOffer.setUser(user);
-        productOffer.setUrl(productOfferForm.getUrl());
-        productOffer.setPrice(productOfferForm.getPrice());
+        productOffer.setUrl(productOfferCreateRequest.getUrl());
+        productOffer.setPrice(productOfferCreateRequest.getPrice());
         productOffer.setChoose(YesNo.N);
 
         productOfferRepository.save(productOffer);
