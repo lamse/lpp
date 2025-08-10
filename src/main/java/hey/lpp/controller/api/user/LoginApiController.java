@@ -4,6 +4,7 @@ import hey.lpp.Constant.SessionConst;
 import hey.lpp.dto.user.LoginRequest;
 import hey.lpp.domain.user.User;
 import hey.lpp.dto.ApiResponse;
+import hey.lpp.dto.user.LoginStatusResponse;
 import hey.lpp.dto.user.UserDto;
 import hey.lpp.service.user.LoginService;
 import jakarta.servlet.http.HttpSession;
@@ -14,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,9 +57,17 @@ public class LoginApiController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<String>> logout() {
-        // stateless 한 api 에서는 보통 클라이언트에서 토큰을 삭제하는 방식으로 로그아웃을 처리합니다.
-        // 서버에서는 특별한 처리가 필요 없을 수 있습니다.
+    public ResponseEntity<ApiResponse<String>> logout(HttpSession session) {
+        session.invalidate();
         return ResponseEntity.ok(ApiResponse.success("로그아웃 되었습니다."));
+    }
+
+    @GetMapping("/login/status")
+    public ResponseEntity<ApiResponse<LoginStatusResponse>> checkLoginStatus(HttpSession session) {
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.success(new LoginStatusResponse(false, null)));
+        }
+        return ResponseEntity.ok(ApiResponse.success(new LoginStatusResponse(true, user)));
     }
 }
