@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaginatedProductResponse {
-    private List<ProductDto> products;
+public class PaginatedResponse<T> {
+    private List<T> items;
     private boolean first;
     private int number;
     private int size;

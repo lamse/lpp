@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import hey.lpp.dto.product.PaginatedProductResponse;
+import hey.lpp.dto.product.PaginatedResponse;
 
 @Slf4j
 @RestController
@@ -60,7 +60,7 @@ public class ProductApiController {
     }
 
         @GetMapping
-        public ResponseEntity<ApiResponse<PaginatedProductResponse>> getProducts(
+        public ResponseEntity<ApiResponse<PaginatedResponse<ProductDto>>> getProducts(
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "8") int size
         ) {
@@ -70,7 +70,7 @@ public class ProductApiController {
                     .map(ProductDto::new)
                     .collect(Collectors.toList());
 
-            PaginatedProductResponse paginatedProductResponse = new PaginatedProductResponse(
+            PaginatedResponse<ProductDto> paginatedProductResponse = new PaginatedResponse<>(
                     productDtos,
                     productPage.isFirst(),
                     productPage.getNumber(),
