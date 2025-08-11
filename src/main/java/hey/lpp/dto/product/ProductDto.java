@@ -1,10 +1,12 @@
 package hey.lpp.dto.product;
 
 import hey.lpp.domain.product.Product;
+import hey.lpp.domain.product.ProductImage;
 import hey.lpp.dto.user.UserDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ProductDto {
@@ -15,6 +17,7 @@ public class ProductDto {
     private String url;
     private Integer price;
     private String description;
+    private List<ProductImage> productImages;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -26,6 +29,7 @@ public class ProductDto {
         this.url = product.getUrl();
         this.price = product.getPrice();
         this.description = product.getDescription();
+        this.productImages = product.getProductImages();
         this.createdAt = product.getCreatedAt();
         this.updatedAt = product.getUpdatedAt();
     }

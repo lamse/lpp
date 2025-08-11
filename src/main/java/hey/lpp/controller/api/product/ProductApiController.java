@@ -12,13 +12,19 @@ import hey.lpp.service.product.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import hey.lpp.dto.product.PaginatedProductResponse;
 
 @Slf4j
 @RestController
@@ -52,4 +58,27 @@ public class ProductApiController {
         log.info("상품 추가 완료: {}", product);
         return ResponseEntity.ok(ApiResponse.success(new ProductCreateResponse(product.getId())));
     }
+
+        @GetMapping
+        public ResponseEntity<ApiResponse<PaginatedProductResponse>> getProducts(
+                @RequestParam(defaultValue = "0") int page,
+                @RequestParam(defaultValue = "8") int size
+        ) {
+            Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+            Page<Product> productPage = productService.findAll(pageable);
+            List<ProductDto> productDtos = productPage.getContent().stream()
+                    .map(ProductDto::new)
+                    .collect(Collectors.toList());
+
+            PaginatedProductResponse paginatedProductResponse = new PaginatedProductResponse(
+                    productDtos,
+                    productPage.isFirst(),
+                    productPage.getNumber(),
+                    productPage.getSize(),
+                    productPage.getTotalPages(),
+                    productPage.isLast(),
+                    productPage.getTotalElements()
+            );
+            return ResponseEntity.ok(ApiResponse.success(paginatedProductResponse));
+        }
 }
