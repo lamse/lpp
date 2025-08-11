@@ -1,5 +1,6 @@
 package hey.lpp.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import hey.lpp.domain.YesNo;
 import hey.lpp.domain.user.User;
 import jakarta.persistence.*;
@@ -41,8 +42,10 @@ public class ProductOffer {
     private YesNo choose;
 
     @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 }

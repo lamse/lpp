@@ -9,6 +9,7 @@ import hey.lpp.dto.product.ProductOfferCreateRequest;
 import hey.lpp.domain.user.User;
 import hey.lpp.repository.product.ProductOfferRepository;
 import hey.lpp.repository.product.ProductRepository;
+import hey.lpp.service.product.ProductOfferService;
 import hey.lpp.service.product.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductService productService;
     private final ProductOfferRepository productOfferRepository;
+    private final ProductOfferService productOfferService;
 
     @GetMapping("/add")
     public String addProductForm(Model model, HttpServletRequest request) {
@@ -68,15 +70,7 @@ public class ProductController {
             return "error/404"; // 상품이 존재하지 않을 경우 404 페이지로 이동
         }
 
-        ProductOffer productOffer = new ProductOffer();
-        User user = (User) httpSession.getAttribute(SessionConst.LOGIN_USER);
-        productOffer.setProductId(id);
-        productOffer.setUser(user);
-        productOffer.setUrl(productOfferCreateRequest.getUrl());
-        productOffer.setPrice(productOfferCreateRequest.getPrice());
-        productOffer.setChoose(YesNo.N);
-
-        productOfferRepository.save(productOffer);
+        ProductOffer productOffer = productOfferService.save(id, productOfferCreateRequest, httpSession);
 
         return "redirect:/product/" + id; // 상품 상세 페이지로 리다이렉트
     }
@@ -98,15 +92,7 @@ public class ProductController {
             return "error/403"; // 권한이 없는 경우 403 페이지로 이동
         }
 
-        product.get().getProductOffers().stream().filter(
-            po -> po.getChoose() == YesNo.Y
-        ).forEach(po -> {
-            po.setChoose(YesNo.N); // 기존 선택된 제안은 선택 해제
-            productOfferRepository.save(po);
-        });
-
-        offer.get().setChoose(YesNo.Y);
-        productOfferRepository.save(offer.get());
+        productOfferService.setChoose(product.get(), offer.get());
 
         return "redirect:/product/" + id; // 상품 상세 페이지로 리다이렉트
     }

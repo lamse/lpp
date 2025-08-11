@@ -56,26 +56,26 @@ public class ProductApiController {
         return ResponseEntity.ok(ApiResponse.success(new ProductCreateResponse(product.getId())));
     }
 
-        @GetMapping
-        public ResponseEntity<ApiResponse<PaginatedResponse<ProductDto>>> getProducts(
-                @RequestParam(defaultValue = "0") int page,
-                @RequestParam(defaultValue = "8") int size
-        ) {
-            Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-            Page<Product> productPage = productService.findAll(pageable);
-            List<ProductDto> productDtos = productPage.getContent().stream()
-                    .map(ProductDto::new)
-                    .collect(Collectors.toList());
+    @GetMapping
+    public ResponseEntity<ApiResponse<PaginatedResponse<ProductDto>>> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+        Page<Product> productPage = productService.findAll(pageable);
+        List<ProductDto> productDtos = productPage.getContent().stream()
+                .map(ProductDto::new)
+                .collect(Collectors.toList());
 
-            PaginatedResponse<ProductDto> paginatedProductResponse = new PaginatedResponse<>(
-                    productDtos,
-                    productPage.isFirst(),
-                    productPage.getNumber(),
-                    productPage.getSize(),
-                    productPage.getTotalPages(),
-                    productPage.isLast(),
-                    productPage.getTotalElements()
-            );
-            return ResponseEntity.ok(ApiResponse.success(paginatedProductResponse));
-        }
+        PaginatedResponse<ProductDto> paginatedProductResponse = new PaginatedResponse<>(
+                productDtos,
+                productPage.isFirst(),
+                productPage.getNumber(),
+                productPage.getSize(),
+                productPage.getTotalPages(),
+                productPage.isLast(),
+                productPage.getTotalElements()
+        );
+        return ResponseEntity.ok(ApiResponse.success(paginatedProductResponse));
+    }
 }

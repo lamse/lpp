@@ -1,5 +1,6 @@
 package hey.lpp.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import hey.lpp.domain.product.Product;
 import hey.lpp.domain.product.ProductImage;
 import hey.lpp.dto.user.UserDto;
@@ -18,7 +19,10 @@ public class ProductDto {
     private Integer price;
     private String description;
     private List<ProductImage> productImages;
+    private boolean isRegistrant;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     public ProductDto(Product product) {
@@ -30,6 +34,7 @@ public class ProductDto {
         this.price = product.getPrice();
         this.description = product.getDescription();
         this.productImages = product.getProductImages();
+        this.isRegistrant = product.isRegistrant();
         this.createdAt = product.getCreatedAt();
         this.updatedAt = product.getUpdatedAt();
     }
