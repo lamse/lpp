@@ -2,11 +2,9 @@ package hey.lpp.controller.api.product;
 
 import hey.lpp.Constant.SessionConst;
 import hey.lpp.domain.product.Product;
-import hey.lpp.dto.product.ProductCreateRequest;
+import hey.lpp.dto.product.*;
 import hey.lpp.domain.user.User;
 import hey.lpp.dto.ApiResponse;
-import hey.lpp.dto.product.ProductCreateResponse;
-import hey.lpp.dto.product.ProductDto;
 import hey.lpp.repository.product.ProductRepository;
 import hey.lpp.service.product.ProductService;
 import jakarta.servlet.http.HttpSession;
@@ -24,7 +22,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import hey.lpp.dto.product.PaginatedResponse;
 
 @Slf4j
 @RestController
@@ -39,7 +36,7 @@ public class ProductApiController {
     public ResponseEntity<ApiResponse<?>> viewProduct(@PathVariable Long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.<ResponseEntity<ApiResponse<?>>>map(value ->
-                ResponseEntity.ok(ApiResponse.success(new ProductDto(value))))
+                ResponseEntity.ok(ApiResponse.success(new ProductDetailDto(value))))
                 .orElseGet(
                         () -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                                 .body(ApiResponse.error(Map.of("global", "상품을 찾을 수 없습니다.")))

@@ -21,7 +21,7 @@ public class ProductOffer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne
     private User user;
 
     @Column(name="product_id")
