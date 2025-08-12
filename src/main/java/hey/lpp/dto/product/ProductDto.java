@@ -24,6 +24,7 @@ public class ProductDto {
     private LocalDateTime createdAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+    private int productOfferCount; // New field
 
     public ProductDto(Product product) {
         this.id = product.getId();
@@ -37,5 +38,6 @@ public class ProductDto {
         this.isRegistrant = product.isRegistrant();
         this.createdAt = product.getCreatedAt();
         this.updatedAt = product.getUpdatedAt();
+        this.productOfferCount = product.getProductOffers() != null ? product.getProductOffers().size() : 0; // Initialize new field
     }
 }
