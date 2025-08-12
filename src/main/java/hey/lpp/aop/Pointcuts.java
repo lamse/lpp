@@ -16,9 +16,12 @@ public class Pointcuts {
     @Pointcut("execution(* hey.lpp.controller.api.product.ProductOfferApiController.*(..))")
     public void offerApiProduct(){}
 
+    @Pointcut("execution(* hey.lpp.controller.api.product.ProductOfferChatApiController.*(..))")
+    public void offerChatApiProduct(){}
+
     @Pointcut("execution(* hey.lpp.controller.product.ProductOfferChatController.chatList(..))")
     public void viewOfferChat(){}
 
-    @Pointcut("(allProduct() || offerApiProduct() || addApiProduct()) && !viewProduct() && !viewOfferChat()")
+    @Pointcut("(allProduct() || offerApiProduct() || offerChatApiProduct() || addApiProduct()) && !viewProduct() && !viewOfferChat()")
     public void loginCheck() {}
 }

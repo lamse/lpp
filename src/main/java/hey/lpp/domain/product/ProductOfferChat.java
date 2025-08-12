@@ -1,5 +1,6 @@
 package hey.lpp.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import hey.lpp.domain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,7 +19,7 @@ public class ProductOfferChat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -29,8 +30,10 @@ public class ProductOfferChat {
     private String comment;
 
     @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 }
