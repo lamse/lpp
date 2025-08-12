@@ -27,7 +27,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginForm(LoginRequest loginRequest, Model model, HttpServletRequest request) {
         model.addAttribute("loginPage", true);
-        model.addAttribute("loginForm", loginRequest);
+        model.addAttribute("loginRequest", loginRequest);
         return "login/loginForm";
     }
 
