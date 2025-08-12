@@ -2,8 +2,11 @@
 <nav th:fragment="gnb">
     <div class='w-full py-3 border-b'>
         <div class='flex justify-between px-20 items-center font-semibold'>
-            <div>
-                <h1 class="text-2xl">LPP - Spring</h1>
+            <div class="flex gap-2">
+                <div class="flex rounded-full py-1 px-4 font-medium border bg-white border-gray-300">
+                    <span class="font-extrabold">LPP</span>
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring" class="w-5 ml-3">
+                </div>
             </div>
             <div class='flex xl:gap-10 md:gap-8  gap-2'>
                 <a href="/">Home</a>
@@ -17,12 +20,21 @@
                 </th:block>
                 <a  th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] == null}" href="/login">Login</a>
             </div>
-            <div>
-                <button id="openTechStack" class='py-2 px-6 bg-black text-white rounded-3xl font-semibold'>Tech Stack</button>
+            <div class="flex items-center gap-2">
+                <a id="react" th:href="${#arrays.contains(@environment.activeProfiles, 'dev')} ? 'http://localhost:3000/' : 'https://lamse.howstuffworks.co.kr/'" target="_blank">
+                    <div class="flex items-center rounded-full py-2 px-4 font-medium border bg-white border-gray-300">
+                        <span class="font-extrabold">React</span>
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+                             alt="React version" class="w-5 ml-2">
+                    </div>
+                </a>
+                <div>
+                    <button id="openTechStack" class="py-2 px-6 bg-black text-white rounded-3xl font-semibold cursor-pointer">Tech Stack</button>
+                </div>
             </div>
         </div>
     </div>
-    <div id="techStackModal" class="fixed z-10 inset-0 overflow-y-auto mt-4 hidden">
+    <div id="techStackModal" class="fixed z-10 inset-0 overflow-y-auto mt-4 opacity-0 pointer-events-none transition-opacity duration-500">
         <div class="flex items-center justify-end mr-52">
             <div class="bg-white w-1/2 p-6 rounded shadow-md border">
                 <div class="flex justify-end mb-4">
@@ -59,6 +71,14 @@
                     <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery" class="w-12 h-12 mb-2">
                         <span class="text-gray-300">jQuery</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="Nginx" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">Nginx</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-600 rounded-xl shadow-lg transition transform hover:scale-105 hover:bg-gray-500">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-original.svg" alt="Debian" class="w-12 h-12 mb-2">
+                        <span class="text-gray-300">Debian Linux</span>
                     </div>
                 </div>
             </div>
