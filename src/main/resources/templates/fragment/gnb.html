@@ -21,7 +21,7 @@
                 <a  th:if="${session[T(hey.lpp.Constant.SessionConst).LOGIN_USER] == null}" href="/login">Login</a>
             </div>
             <div class="flex items-center gap-2">
-                <a id="react" th:href="${#arrays.contains(@environment.activeProfiles, 'dev')} ? 'http://localhost:3000/' : 'https://lamse.howstuffworks.co.kr/'" target="_blank">
+                <a id="react" th:href="${#arrays.contains(@environment.activeProfiles, 'dev')} ? 'http://localhost:3000/' : 'https://lamse.github.io/lpp-react/'" target="_blank">
                     <div class="flex items-center rounded-full py-2 px-4 font-medium border bg-white border-gray-300">
                         <span class="font-extrabold">React</span>
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
