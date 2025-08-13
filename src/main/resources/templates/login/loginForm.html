@@ -22,6 +22,7 @@
                     <div class="mt-2">
                         <input id="email" type="email" th:field="*{email}" th:errorclass="field-error"
                                required autocomplete="email"
+                               placeholder="guest@guest.com"
                                class="block w-full rounded-md px-3 py-1.5 border border-gray-300" />
                         <div class="field-error" th:errors="*{email}"></div>
                     </div>
@@ -37,6 +38,7 @@
                     <div class="mt-2">
                         <input id="password" type="password" th:field="*{password}" th:errorclass="field-error"
                                required autocomplete="current-password"
+                               placeholder="password"
                                class="block w-full rounded-md bg-white px-3 py-1.5 border border-gray-300" />
                         <div class="field-error" th:errors="*{password}"></div>
                     </div>
