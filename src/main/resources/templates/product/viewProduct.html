@@ -59,7 +59,15 @@
                                                     <span class="text-gray-500" th:text="${productOffer.user.name}">Offerer</span> |
                                                     <span class="text-gray-600 text-sm" th:text="${#temporals.format(productOffer.createdAt, 'yyyy-MM-dd HH:mm')}">2023-10-01 12:00</span>
                                                 </div>
-                                                <button class="openChat ml-2" th:attr="data-id=${productOffer.id}" type="button"><span class="material-icons">chat</span></button>
+                                                <div class="relative p-2 rounded-lg -mt-2">
+                                                    <button class="openChat ml-2" th:attr="data-id=${productOffer.id}" type="button"><span class="material-icons">chat</span></button>
+                                                    <div class="ml-5 px-1 py-1 min-w-5 rounded-full text-center text-white text-xs absolute -top-2 -end-1 translate-x-1/4 text-nowrap">
+                                                        <div class="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-400 text-white"
+                                                        th:if="${productOffer.productOfferChats.size() > 0}" th:text="${productOffer.productOfferChats.size()}">
+                                                            3
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <button type="submit" th:if="${product.isRegistrant() && productOffer.choose.toString() == 'N'}">
                                                 <span class="material-icons text-blue-500 hover:text-blue-600">thumb_up</span>
