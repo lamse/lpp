@@ -47,7 +47,7 @@
                                 <form action="" th:action="@{/product/{id}/offer/choose/{offerId}(id=${product.id}, offerId=${productOffer.id})}" method="post">
                                     <div class="px-2 py-2 sm:px-6">
                                         <div class="flex items-center justify-between">
-                                            <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                            <h3 class="text-lg leading-6 font-bold text-gray-900"
                                                 th:text="|&bsol;${#numbers.formatInteger(productOffer.price, 1, 'COMMA')}|">Price</h3>
                                             <p class="mt-1 max-w-2xl text-sm text-gray-500">
                                                 <a th:href="${productOffer.url}" target="_blank" th:text="${productOffer.url}">URL</a>
