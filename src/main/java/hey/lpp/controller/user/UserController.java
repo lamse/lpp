@@ -43,7 +43,7 @@ public class UserController {
             httpSession.setAttribute(SessionConst.LOGIN_USER, joinUser);
         } catch (Exception ex) {
             log.error("회원 가입 실패: {}", ex.getMessage());
-            bindingResult.reject("joinFail", "이미 존재하는 이메일입니다."); // 가입 실패 메시지 추가
+            bindingResult.reject("joinFail", "This email already exists."); // 가입 실패 메시지 추가
             return "user/joinForm"; // 가입 실패 시 다시 폼으로 이동
         }
 

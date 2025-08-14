@@ -43,7 +43,7 @@ public class LoginController {
         // 로그인 처리 로직
         User user = loginService.login(loginRequest);
         if (user == null) {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다."); // 로그인 실패 메시지 추가
+            bindingResult.reject("loginFail", "Your email or password does not match."); // 로그인 실패 메시지 추가
             return "login/loginForm"; // 로그인 실패 시 다시 폼으로 이동
         }
 

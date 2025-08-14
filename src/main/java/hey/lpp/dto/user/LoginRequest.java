@@ -13,6 +13,6 @@ public class LoginRequest {
     private String email;
 
     @NotEmpty
-    @Size(min = 4, message = "비밀번호는 4자 이상 입력해주세요.")
+    @Size(min = 6, message = "Please enter a password of at least 6 characters..")
     private String password;
 }

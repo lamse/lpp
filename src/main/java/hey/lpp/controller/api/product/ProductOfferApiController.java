@@ -52,7 +52,7 @@ public class ProductOfferApiController {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(Map.of("global", "상품을 찾을 수 없습니다.")));
+                    .body(ApiResponse.error(Map.of("global", "The product could not be found.")));
         }
 
         ProductOffer productOffer = productOfferService.save(id, productOfferCreateRequest, httpSession);
@@ -65,19 +65,19 @@ public class ProductOfferApiController {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(Map.of("global", "상품을 찾을 수 없습니다.")));
+                    .body(ApiResponse.error(Map.of("global", "The product could not be found.")));
         }
 
         Optional<ProductOffer> offer = productOfferRepository.findById(offerId);
         if (offer.isEmpty() || !offer.get().getProductId().equals(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(Map.of("global", "제안을 찾을 수 없습니다.")));
+                    .body(ApiResponse.error(Map.of("global", "No offers found.")));
         }
 
         User user = (User) httpSession.getAttribute(SessionConst.LOGIN_USER);
         if (user == null || !user.getId().equals(product.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error(Map.of("global", "권한이 없습니다.")));
+                    .body(ApiResponse.error(Map.of("global", "You do not have permission.")));
         }
 
         ProductOffer productOffer = productOfferService.setChoose(product.get(), offer.get());

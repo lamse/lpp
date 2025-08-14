@@ -39,7 +39,7 @@ public class ProductApiController {
                 ResponseEntity.ok(ApiResponse.success(new ProductDetailDto(value))))
                 .orElseGet(
                         () -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body(ApiResponse.error(Map.of("global", "상품을 찾을 수 없습니다.")))
+                                .body(ApiResponse.error(Map.of("global", "The product could not be found.")))
                 );
     }
 

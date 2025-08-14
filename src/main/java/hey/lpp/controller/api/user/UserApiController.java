@@ -51,7 +51,7 @@ public class UserApiController {
             return ResponseEntity.ok(ApiResponse.success(joinUser));
         } catch (Exception ex) {
             log.error("회원 가입 실패: {}", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(Map.of("global", "이미 존재하는 이메일입니다.")));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(Map.of("global", "This email already exists.")));
         }
 
     }

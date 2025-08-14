@@ -47,7 +47,7 @@ public class LoginApiController {
         // 로그인 처리 로직
         User user = loginService.login(loginRequest);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error(Map.of("global", "아이디 또는 비밀번호가 일치하지 않습니다.")));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error(Map.of("global", "Your email or password does not match.")));
         }
 
         user.setPassword(null); // 보안을 위해 세션에 저장하기 전에 비밀번호를 제거
@@ -59,7 +59,7 @@ public class LoginApiController {
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<String>> logout(HttpSession session) {
         session.invalidate();
-        return ResponseEntity.ok(ApiResponse.success("로그아웃 되었습니다."));
+        return ResponseEntity.ok(ApiResponse.success("You have been logged out."));
     }
 
     @GetMapping("/login/status")

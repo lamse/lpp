@@ -46,13 +46,13 @@ public class ValidFileValidator implements ConstraintValidator<ValidFile, List<M
             try {
                 int targetByte = file.getBytes().length;
                 if (targetByte == 0) {
-                    context.buildConstraintViolationWithTemplate("파일(" + fileName + ")의 용량이 0 byte입니다.").addConstraintViolation();
+                    context.buildConstraintViolationWithTemplate("The size of file(" + fileName + ")is 0 bytes.").addConstraintViolation();
                     result = false;
                     continue;
                 }
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
-                context.buildConstraintViolationWithTemplate("파일(" + fileName + ")의 용량 확인 중 에러가 발생했습니다.").addConstraintViolation();
+                context.buildConstraintViolationWithTemplate("An error occurred while checking the capacity of file.(" + fileName + ")").addConstraintViolation();
                 result = false;
                 continue;
             }
@@ -62,7 +62,7 @@ public class ValidFileValidator implements ConstraintValidator<ValidFile, List<M
 
             //파일명의 허용 확장자 검사
             if (!ArrayUtils.contains(allowExtArray, fileExt.toLowerCase())) {
-                String sb = "허용되지 않는 확장자(" + fileExt + ")의 파일이 포함되어 있습니다. 다음 확장자들만 허용됩니다." +
+                String sb = "Contains files with an extension that is not allowed(" + fileExt + "). Only the following extensions are allowed" +
                         " [" + Arrays.toString(allowExtArray)  + "]";
                 context.buildConstraintViolationWithTemplate(sb).addConstraintViolation();
                 result = false;
