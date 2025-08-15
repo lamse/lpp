@@ -36,14 +36,16 @@ public class ProductController {
     private final ProductOfferService productOfferService;
 
 
-    @GetMapping("/search")
+    @GetMapping({"/", "/search"})
     public String searchProducts(@RequestParam(required = false) String query,
                                  @RequestParam(required = false) Integer minPrice,
                                  @RequestParam(required = false) Integer maxPrice,
                                  @PageableDefault(size = 8) Pageable pageable,
-                                 Model model) {
+                                 Model model,
+                                 HttpServletRequest request) {
         Page<Product> productPage = productService.search(query, minPrice, maxPrice, pageable);
         model.addAttribute("productPage", productPage);
+        model.addAttribute("requestUri", request.getRequestURI());
         return "home";
     }
 

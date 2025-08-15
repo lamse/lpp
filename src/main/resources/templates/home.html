@@ -35,7 +35,7 @@
                 </div>
 
             </div>
-            <div th:if="${productPage != null}" th:replace="~{fragment/pagination :: pagination(${productPage}, '/product/search')}"></div>
+            <div th:if="${productPage != null}" th:replace="~{fragment/pagination :: pagination(${productPage}, ${requestUri})}"></div>
         </div>
     </div>
 

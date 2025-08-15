@@ -6,10 +6,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@Profile("dev") // This configuration will only be active in 'dev' profile
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
+    @Profile("dev") // This configuration will only be active in 'dev' profile
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://localhost:*", "http://127.0.0.1:*")
