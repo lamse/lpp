@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:fragment="search" class="mt-4 mx-2">
+    <form th:action="@{/product/search}" method="get" class="mb-8">
+        <div class="p-4 text-gray-600 dark:text-gray-300 outline-none focus:outline-none">
+            <div class="relative flex items-center w-full lg:w-1/2 mx-auto">
+                <label class="w-36 bg-white h-10 flex pl-4 pr-1 rounded-l-full text-sm focus:outline-none outline-none border-2 border-r-0 border-gray-500">
+                    <input type="number" id="minPrice" name="minPrice" placeholder="Min Price"
+                           th:value="${param.minPrice}" class="w-full outline-none">
+                </label>
+                <span class="border-t-2 border-b-2 h-10 border-gray-500">_</span>
+                <label class="w-36 bg-white h-10 flex px-1 text-sm focus:outline-none outline-none border-2 border-l-0  border-gray-500">
+                    <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price"
+                           th:value="${param.maxPrice}" class="w-full outline-none">
+                </label>
+                <label class="w-full bg-white h-10 flex px-5 rounded-r-full text-sm focus:outline-none border-2 border-l-0 border-gray-500">
+                    <input
+                            type="search"
+                            name="query"
+                            th:value="${param.query}"
+                            placeholder="Search"
+                            class="w-full outline-none mr-3"
+                            autocomplete="off"
+                            spellcheck="false"
+                            required
+                            step="any"
+                            autocapitalize="none"
+                            autofocus />
+                </label>
+                <button
+                        type="submit"
+                        class="absolute inset-y-0 right-0 flex items-center px-2">
+                    <span class="material-icons">search</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

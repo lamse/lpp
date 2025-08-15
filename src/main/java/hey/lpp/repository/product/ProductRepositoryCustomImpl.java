@@ -20,14 +20,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Product> search(String name, String modelNo, Integer minPrice, Integer maxPrice, Pageable pageable) {
+    public Page<Product> search(String query, Integer minPrice, Integer maxPrice, Pageable pageable) {
         QProduct product = QProduct.product;
 
         List<Product> products = queryFactory
                 .selectFrom(product)
                 .where(
-                        likeName(name),
-                        likeModelNo(modelNo),
+                        likeNameOrModelNo(query),
                         betweenPrice(minPrice, maxPrice)
                 )
                 .offset(pageable.getOffset())
@@ -37,8 +36,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         long total = queryFactory
                 .selectFrom(product)
                 .where(
-                        likeName(name),
-                        likeModelNo(modelNo),
+                        likeNameOrModelNo(query),
                         betweenPrice(minPrice, maxPrice)
                 )
                 .fetchCount();
@@ -46,18 +44,19 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         return new PageImpl<>(products, pageable, total);
     }
 
-    private BooleanExpression likeName(String name) {
-        if (StringUtils.hasText(name)) {
-            return QProduct.product.name.like("%" + name + "%");
+    private BooleanExpression likeNameOrModelNo(String query) {
+        if (StringUtils.hasText(query)) {
+            return likeName(query).or(likeModelNo(query));
         }
         return null;
     }
 
+    private BooleanExpression likeName(String query) {
+        return QProduct.product.name.like("%" + query + "%");
+    }
+
     private BooleanExpression likeModelNo(String modelNo) {
-        if (StringUtils.hasText(modelNo)) {
-            return QProduct.product.modelNo.like("%" + modelNo + "%");
-        }
-        return null;
+        return QProduct.product.modelNo.like("%" + modelNo + "%");
     }
 
     private BooleanExpression betweenPrice(Integer minPrice, Integer maxPrice) {

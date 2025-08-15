@@ -31,8 +31,8 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Page<Product> search(String name, String modelNo, Integer minPrice, Integer maxPrice, Pageable pageable) {
-        return productRepository.search(name, modelNo, minPrice, maxPrice, pageable);
+    public Page<Product> search(String query, Integer minPrice, Integer maxPrice, Pageable pageable) {
+        return productRepository.search(query, minPrice, maxPrice, pageable);
     }
 
     @SneakyThrows
