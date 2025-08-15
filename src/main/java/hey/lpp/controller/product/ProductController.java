@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,6 @@ import java.util.Optional;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/product")
 public class ProductController {
     private final ProductRepository productRepository;
     private final ProductService productService;
@@ -36,11 +36,11 @@ public class ProductController {
     private final ProductOfferService productOfferService;
 
 
-    @GetMapping({"/", "/search"})
+    @GetMapping({"/", "/product/search"})
     public String searchProducts(@RequestParam(required = false) String query,
                                  @RequestParam(required = false) Integer minPrice,
                                  @RequestParam(required = false) Integer maxPrice,
-                                 @PageableDefault(size = 8) Pageable pageable,
+                                 @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
                                  Model model,
                                  HttpServletRequest request) {
         Page<Product> productPage = productService.search(query, minPrice, maxPrice, pageable);
@@ -49,14 +49,14 @@ public class ProductController {
         return "home";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/product/add")
     public String addProductForm(Model model, HttpServletRequest request) {
         model.addAttribute("referer", request.getHeader("Referer"));
         model.addAttribute("productCreateRequest", new ProductCreateRequest());
         return "product/addProductForm";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/product/add")
     public String addProduct(@Validated ProductCreateRequest productCreateRequest, BindingResult bindingResult, HttpSession httpSession) {
 
         if (bindingResult.hasErrors()) {
@@ -68,7 +68,7 @@ public class ProductController {
         return "redirect:/";
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/product/{id}")
     public String viewProduct(@PathVariable Long id, Model model) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
@@ -79,7 +79,7 @@ public class ProductController {
         return "product/viewProduct";
     }
 
-    @PostMapping("/{id}/offer")
+    @PostMapping("/product/{id}/offer")
     public String productOffer(@PathVariable Long id, @Validated ProductOfferCreateRequest productOfferCreateRequest, HttpSession httpSession) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
@@ -91,7 +91,7 @@ public class ProductController {
         return "redirect:/product/" + id; // 상품 상세 페이지로 리다이렉트
     }
 
-    @PostMapping("/{id}/offer/choose/{offerId}")
+    @PostMapping("/product/{id}/offer/choose/{offerId}")
     public String chooseOffer(@PathVariable Long id, @PathVariable Long offerId, HttpSession httpSession) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {

@@ -10,9 +10,9 @@ import hey.lpp.service.product.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -57,18 +57,18 @@ public class ProductApiController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PaginatedResponse<ProductDto>>> getProducts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size
-    ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Page<Product> productPage = productService.findAll(pageable);
-        List<ProductDto> productDtos = productPage.getContent().stream()
+    public ResponseEntity<ApiResponse<PaginatedResponse<ProductDto>>> searchProducts(@RequestParam(required = false) String query,
+                                 @RequestParam(required = false) Integer minPrice,
+                                 @RequestParam(required = false) Integer maxPrice,
+                                 @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
+        Page<Product> productPage = productService.search(query, minPrice, maxPrice, pageable);
+
+        List<ProductDto> products = productPage.stream()
                 .map(ProductDto::new)
                 .collect(Collectors.toList());
 
         PaginatedResponse<ProductDto> paginatedProductResponse = new PaginatedResponse<>(
-                productDtos,
+                products,
                 productPage.isFirst(),
                 productPage.getNumber(),
                 productPage.getSize(),
