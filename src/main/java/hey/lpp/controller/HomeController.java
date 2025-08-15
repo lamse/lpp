@@ -25,8 +25,8 @@ public class HomeController {
                        Model model) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Page<Product> products = productRepository.findAll(pageable);
-        model.addAttribute("products", products);
+        Page<Product> productPage = productRepository.findAll(pageable);
+        model.addAttribute("productPage", productPage);
 
         return "home";
     }

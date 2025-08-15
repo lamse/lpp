@@ -16,7 +16,7 @@ public class ProductCreateRequest {
     @NotEmpty
     private String name;
 
-    private String ModelNo;
+    private String modelNo;
 
     @NotEmpty
     @URL

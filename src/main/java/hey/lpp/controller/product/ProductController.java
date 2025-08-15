@@ -1,7 +1,6 @@
 package hey.lpp.controller.product;
 
 import hey.lpp.Constant.SessionConst;
-import hey.lpp.domain.YesNo;
 import hey.lpp.domain.product.Product;
 import hey.lpp.dto.product.ProductCreateRequest;
 import hey.lpp.domain.product.ProductOffer;
@@ -15,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +34,19 @@ public class ProductController {
     private final ProductService productService;
     private final ProductOfferRepository productOfferRepository;
     private final ProductOfferService productOfferService;
+
+
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam(required = false) String name,
+                                 @RequestParam(required = false) String modelNo,
+                                 @RequestParam(required = false) Integer minPrice,
+                                 @RequestParam(required = false) Integer maxPrice,
+                                 @PageableDefault(size = 10) Pageable pageable,
+                                 Model model) {
+        Page<Product> productPage = productService.search(name, modelNo, minPrice, maxPrice, pageable);
+        model.addAttribute("productPage", productPage);
+        return "home";
+    }
 
     @GetMapping("/add")
     public String addProductForm(Model model, HttpServletRequest request) {

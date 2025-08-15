@@ -31,6 +31,10 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Page<Product> search(String name, String modelNo, Integer minPrice, Integer maxPrice, Pageable pageable) {
+        return productRepository.search(name, modelNo, minPrice, maxPrice, pageable);
+    }
+
     @SneakyThrows
     public Product add(ProductCreateRequest productCreateRequest, User user) {
         Product product = new Product();

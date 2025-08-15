@@ -32,7 +32,7 @@ public class Product {
     @NotEmpty
     private String name;
 
-    private String ModelNo;
+    private String modelNo;
 
     @NotEmpty
     private String url;
