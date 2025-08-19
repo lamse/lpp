@@ -16,6 +16,6 @@ public class JoinRequest {
     private String name;
 
     @NotEmpty
-    @Size(min = 6, message = "Please enter a password of at least 6 characters..")
+    @Size(min = 4, message = "Please enter a password of at least 4 characters..")
     private String password;
 }
